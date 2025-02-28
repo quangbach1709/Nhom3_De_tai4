@@ -6,6 +6,6 @@ const app = new Hono();
 
 app.use('*', logger())
 
-app.route('/nganh', nganhRouter)
+app.route('/api/nganh', nganhRouter)
 
 export default app
