@@ -27,7 +27,8 @@ app.route("/api/do-an", doAnRoute);
 app.route("/api/cong-ty", congTyRoute);
 
 // Route mặc định
-app.get("/", (c) => c.text("tự tìm đến routes nào đó đi. Vd: /api/dot-do-an"));
+app.get("/", (c) => c.text("tự tìm đến routes nào đó đi. Vd: localhost:3000/api/dot-do-an"));
+
 
 
 console.log(`Server đang chạy tại app.ts`);
