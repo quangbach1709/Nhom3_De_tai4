@@ -1,11 +1,7 @@
-import { Hono } from "hono"
+import { Hono } from 'hono';
+import { getAllNganh, createNganh } from '../controllers/nganh.controller';
 
-export const nganhRouter = new Hono()
-    .get('/', (c) => {
-        return c.json({ nganh: 'nganh' })
-    })
-    .post('/', (c) => {
-        return c.json({})
-    })
-    // .delete
-    // .put
+export const nganhRoute = new Hono();
+nganhRoute.get('/', getAllNganh);
+nganhRoute.post('/', createNganh);
+export default nganhRoute;
