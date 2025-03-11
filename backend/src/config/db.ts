@@ -1,4 +1,7 @@
 import { createPool } from 'mysql2/promise';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export const db = createPool({
     host: process.env.DB_HOST,
@@ -7,14 +10,7 @@ export const db = createPool({
     database: process.env.DB_NAME,
     waitForConnections: true,
     connectionLimit: 10,
+    queueLimit: 0,
 });
 
-// Ở đây nhớ hãy sử dụng Bun và đã tạo và cài đặt file env xong
-
-// Ví dụ cho việc sử dụng database:
-// import { db } from '../config/db';
-
-// export const getSinhVien = async () => {
-//   const [rows] = await db.query('SELECT * FROM SINH_VIEN');
-//   return rows;
-// };
+export default db;
