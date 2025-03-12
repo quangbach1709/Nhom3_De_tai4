@@ -1,6 +1,5 @@
 import { Context } from "hono";
 import { db } from "../config/db";
-import { CongTy } from "../models/cong-ty.model";
 
 export const getAllCongTy = async (c: Context) => {
   try {

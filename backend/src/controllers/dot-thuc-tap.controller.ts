@@ -1,6 +1,5 @@
 import  { Context } from "hono";
 import { db } from "../config/db";
-import { DotThucTap } from "../models/dot-thuc-tap.model";
 
 export const getAllDotThucTap = async (c: Context) => {
   try {

@@ -1,6 +1,5 @@
 import { Context } from "hono";
 import { db } from "../config/db";
-import { DoAn } from "../models/do-an.model";
 
 export const getAllDoAn = async (c: Context) => {
   try {
