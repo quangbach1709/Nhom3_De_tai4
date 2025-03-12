@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-export interface SinhVien {
-    ma_sv: string;
-    username: string;
-    lop: string;
-    ma_nganh: string;
-}
-=======
 import { db } from '../config/db';
 import type { Context } from 'hono';
 
@@ -28,4 +20,4 @@ export const createSinhVien = async (c: Context) => {
   );
   return c.json({ message: 'Sinh viên đã được tạo' }, 201);
 };
->>>>>>> 2ffd58c (good luck)
+
