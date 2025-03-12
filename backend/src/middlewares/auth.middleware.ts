@@ -1,35 +1,35 @@
 import type { Context, Next } from "hono";
-import { decode, verify } from "hono/jwt";
+import { db } from "../config/db";
+import type { RowDataPacket } from "mysql2";
 
-const SECRET_KEY = process.env.JWT_SECRET || "secret";
+export const authMiddleware = async (c: Context, next: Next) => {
+  const email = c.req.header("X-User-Email");
 
-export const authenticate = async (c: Context, next: Next) => {
-  const authHeader = c.req.header("Authorization");
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return c.json({ message: "Unauthorized" }, 401);
+  if (!email) {
+    return c.json({ error: "Unauthorized" }, 401);
   }
 
-  const token = authHeader.replace("Bearer ", "");
+  const [rows] = await db.execute<RowDataPacket[]>(
+    "SELECT username, role FROM NGUOI_DUNG WHERE email = ? LIMIT 1",
+    [email]
+  );
 
-  try {
-    const decoded = await verify(token, SECRET_KEY);
-    if (!decoded) {
-      return c.json({ message: "Invalid token" }, 401);
-    }
-
-    c.set("user", decoded);
-    await next();
-  } catch (error) {
-    return c.json({ message: "Invalid token" }, 401);
+  if (rows.length === 0) {
+    return c.json({ error: "User not found" }, 401);
   }
+
+  c.set("user", rows[0]);
+  await next();
 };
 
-export const authorize = (roles: string[]) => {
+export const roleMiddleware = (allowedRoles: string[]) => {
   return async (c: Context, next: Next) => {
-    const user = c.get("user") as { id: number; role: string } | undefined;
-    if (!user || !roles.includes(user.role)) {
-      return c.json({ message: "Forbidden" }, 403);
+    const user = c.get("user");
+
+    if (!user || !allowedRoles.includes(user.role)) {
+      return c.json({ error: "Forbidden" }, 403);
     }
+
     await next();
   };
 };

@@ -1,4 +1,4 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 import { db } from "../config/db";
 
 export const getAllCongTy = async (c: Context) => {

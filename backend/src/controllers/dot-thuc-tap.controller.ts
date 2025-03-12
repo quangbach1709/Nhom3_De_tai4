@@ -1,4 +1,4 @@
-import  { Context } from "hono";
+import { Context } from "hono";
 import { db } from "../config/db";
 
 export const getAllDotThucTap = async (c: Context) => {
@@ -23,7 +23,7 @@ export const getDotThucTapById = async (c: Context) => {
 export const createDotThucTap = async (c: Context) => {
   try {
     const body = await c.req.json();
-    const { ten_dot,loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk } = body;
+    const { ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk } = body;
     await db.query("INSERT INTO DOT_DANG_KY (ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk) VALUES (?, 'Thực tập', ?, ?, ?, ?)", [
       ten_dot,
       loai_dot,

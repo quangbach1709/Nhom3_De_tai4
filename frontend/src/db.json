@@ -4,19 +4,19 @@
       "id": "1",
       "email": "truongkhoa@example.com",
       "password": "hihi",
-      "role": "truongkhoa"
+      "role": "truong_khoa"
     },
     {
       "id": "2",
       "email": "giangvien@example.com",
-      "password": "123456",
-      "role": "giangvien"
+      "password": "12341234",
+      "role": "giang_vien"
     },
     {
       "id": "3",
       "email": "sinhvien@example.com",
-      "password": "mksinhvien",
-      "role": "sinhvien"
+      "password": "mk123",
+      "role": "sinh_vien"
     }
   ]
 }

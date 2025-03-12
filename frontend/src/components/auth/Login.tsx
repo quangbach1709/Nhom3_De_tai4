@@ -28,13 +28,13 @@ export default function Login() {
 
             // Điều hướng theo vai trò
             switch (user.role) {
-                case "truongkhoa":
+                case "truong_khoa":
                     navigate("/dashboard/truongkhoa");
                     break;
-                case "giangvien":
+                case "giang_vien":
                     navigate("/dashboard/giangvien");
                     break;
-                case "sinhvien":
+                case "sinh_vien":
                     navigate("/dashboard/sinhvien");
                     break;
                 default:
