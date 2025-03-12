@@ -1,10 +1,6 @@
 import { app } from './app';
 
-const PORT = process.env.PORT;
-
-console.log(`Server đang chạy ở index.ts`);
-
 export default {
-  port: PORT,
+  port: 3000,
   fetch: app.fetch,
 };

@@ -41,7 +41,7 @@ export const createCongTy = async (c: Context) => {
 
     return c.json({ message: "Đã tạo công ty" }, 201);
   } catch (error) {
-    return c.json({ error: "Lỗi khi tạo công ty" }, 500 );
+    return c.json({ error: "Lỗi khi tạo công ty" }, 500);
   }
 };
 
@@ -55,7 +55,7 @@ export const updateCongTy = async (c: Context) => {
 
     return c.json({ message: "Đã cập nhật công ty" });
   } catch (error) {
-    return c.json({ error: "Lỗi khi cập nhật công ty" }, 500 );
+    return c.json({ error: "Lỗi khi cập nhật công ty" }, 500);
   }
 };
 
@@ -65,6 +65,6 @@ export const deleteCongTy = async (c: Context) => {
     await db.query("DELETE FROM CONG_TY WHERE ma_cty = ?", [id]);
     return c.json({ message: "Đã xoá công ty" });
   } catch (error) {
-    return c.json({ error: "Lỗi khi xoá công ty" }, 500 );
+    return c.json({ error: "Lỗi khi xoá công ty" }, 500);
   }
 };

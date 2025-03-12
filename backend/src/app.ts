@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { serve } from "@hono/node-server";
 import { db } from "./config/db";
 import { dotDoAnRoute } from "./routes/dot-do-an.routes";
 import { dotThucTapRoute } from "./routes/dot-thuc-tap.routes";
