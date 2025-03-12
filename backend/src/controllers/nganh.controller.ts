@@ -3,7 +3,7 @@ import type { Context } from "hono";
 import { db } from '../config/db';
 
 export const getAllNganh = async (c: Context) => {
-    const [rows] = await db.execute('SELECT * FROM nganh');
+    const [rows] = await db.execute('SELECT * FROM NGANH');
     return c.json(rows);
 };
 
