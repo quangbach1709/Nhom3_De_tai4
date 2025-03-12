@@ -1,10 +1,14 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
+import { db } from "./config/db";
 import { dotDoAnRoute } from "./routes/dot-do-an.routes";
 import { dotThucTapRoute } from "./routes/dot-thuc-tap.routes";
 import { doAnRoute } from "./routes/do-an.routes";
 import { congTyRoute } from "./routes/cong-ty.routes";
-import { db } from "./config/db";
+import { nganhRoute } from "./routes/nganh.routes";
+import { giangVienRoute } from "./routes/giang-vien.routes";
+import { sinhVienRoute } from "./routes/sinh-vien.routes";
+import { logger } from "hono/logger";
 
 export const app = new Hono();
 
@@ -19,16 +23,17 @@ db.getConnection()
     console.error("Lỗi kết nối MySQL:", err);
   });
 
-// Khai báo các routes
+// Middleware
+app.use('*', logger());
 
+// Khai báo các routes
 app.route("/api/dot-do-an", dotDoAnRoute);
 app.route("/api/dot-thuc-tap", dotThucTapRoute);
 app.route("/api/do-an", doAnRoute);
 app.route("/api/cong-ty", congTyRoute);
+app.route('/api/nganh', nganhRoute);
+app.route('/api/giang-vien', giangVienRoute);
+app.route('/api/sinh-vien', sinhVienRoute);
 
 // Route mặc định
-app.get("/", (c) => c.text("tự tìm đến routes nào đó đi. Vd: localhost:3000/api/dot-do-an"));
-
-
-
-console.log(`Server đang chạy tại app.ts`);
+app.get("/", (c) => c.text("Welcome to the Project & Internship Management API "));
