@@ -23,39 +23,43 @@ export const getDotDoAnById = async (c: Context) => {
 
 export const createDotDoAn = async (c: Context) => {
   try {
-    const body = await c.req.json();
-    const { ten_dot,loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk } = body;
-    await db.query("INSERT INTO DOT_DANG_KY (ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk) VALUES (?, 'do_an', ?, ?, ?, ?)", [
-      ten_dot,
-      loai_dot,
-      thoi_gian_bat_dau,
-      thoi_gian_ket_thuc,
-      trang_thai,
-      ma_tk,
-    ]);
-    return c.json({ message: "Created successfully" }, 201);
+    const body = await c.req.json().catch(() => {
+      throw new Error("Invalid JSON format");
+    });
+
+    const { ma_dot, ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk } = body;
+    await db.query(
+      "INSERT INTO DOT_DANG_KY (ma_dot, ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk) VALUES (?, ?, ?, ?, ?, ?, ?)",
+      [ma_dot, ten_dot, loai_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk]
+    );
+
+    return c.json({ message: "Đồ án mới đã được tạo" }, 201);
   } catch (error) {
+    console.error("Lỗi khi tạo đợt đồ án:", error);
     return c.json({ error: error.message }, 500);
   }
 };
+
+
 
 export const updateDotDoAn = async (c: Context) => {
   try {
     const id = c.req.param("id");
     const body = await c.req.json();
     const { ten_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk } = body;
-    await db.query("UPDATE DOT_DANG_KY SET ten_dot = ?, thoi_gian_bat_dau = ?, thoi_gian_ket_thuc = ?, trang_thai = ?, ma_tk = ? WHERE ma_dot = ? AND loai_dot = 'Đồ án'", [
-      ten_dot,
-      thoi_gian_bat_dau,
-      thoi_gian_ket_thuc,
-      trang_thai,
-      ma_tk,
-    ]);
+
+    await db.query(
+      "UPDATE DOT_DANG_KY SET ten_dot = ?, thoi_gian_bat_dau = ?, thoi_gian_ket_thuc = ?, trang_thai = ?, ma_tk = ? WHERE ma_dot = ? AND loai_dot = 'Đồ án'",
+      [ten_dot, thoi_gian_bat_dau, thoi_gian_ket_thuc, trang_thai, ma_tk, id]
+    );
+
     return c.json({ message: "Updated successfully" });
   } catch (error) {
+    console.error("Lỗi SQL:", error);
     return c.json({ error: error.message }, 500);
   }
 };
+
 
 export const deleteDotDoAn = async (c: Context) => {
   try {
