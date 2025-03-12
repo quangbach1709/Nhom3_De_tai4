@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
+import { db } from "./config/db";
 import { dotDoAnRoute } from "./routes/dot-do-an.routes";
 import { dotThucTapRoute } from "./routes/dot-thuc-tap.routes";
 import { doAnRoute } from "./routes/do-an.routes";
@@ -7,10 +8,10 @@ import { congTyRoute } from "./routes/cong-ty.routes";
 import { nganhRoute } from "./routes/nganh.routes";
 import { giangVienRoute } from "./routes/giang-vien.routes";
 import { sinhVienRoute } from "./routes/sinh-vien.routes";
-import { db } from "./config/db";
 import { logger } from "hono/logger";
 
-const app = new Hono();
+export const app = new Hono();
+
 
 // Kiểm tra kết nối database
 db.getConnection()
@@ -36,11 +37,3 @@ app.route('/api/sinh-vien', sinhVienRoute);
 
 // Route mặc định
 app.get("/", (c) => c.text("Welcome to the Project & Internship Management API "));
-
-const port = 3000;
-serve({
-  fetch: app.fetch,
-  port,
-});
-
-console.log(`Server đang chạy tại http://localhost:${port}`);

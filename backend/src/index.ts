@@ -1,8 +1,10 @@
-import app from './app'
+import { app } from './app';
 
-Bun.serve({
-    hostname: "0.0.0.0",
-    fetch: app.fetch
-})
+const PORT = process.env.PORT;
 
-console.log(`Listening on http://localhost:3000`);
+console.log(`Server đang chạy ở index.ts`);
+
+export default {
+  port: PORT,
+  fetch: app.fetch,
+};
