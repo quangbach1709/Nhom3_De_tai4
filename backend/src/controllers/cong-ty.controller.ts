@@ -14,7 +14,7 @@ export const getAllCongTy = async (c: Context) => {
 };
 
 export const getCongTyById = async (c: Context) => {
-  const { id } = c.req.param();
+  const id = c.req.param("ma_cty");
   try {
     const [rows] = await db.query(`
       SELECT * FROM CONG_TY CT
@@ -32,11 +32,11 @@ export const getCongTyById = async (c: Context) => {
 };
 
 export const createCongTy = async (c: Context) => {
-  const { ma_cty, ten_cty, dia_chi, nguoi_dai_dien } = await c.req.json();
+  const { ma_cty, ten_cty, dia_chi, nguoi_dai_dien, ma_nganh } = await c.req.json();
   try {
     await db.query(`
       INSERT INTO CONG_TY (ma_cty, ten_cty, dia_chi, nguoi_dai_dien, ma_nganh)
-      VALUES (?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?)
     `, [ma_cty, ten_cty, dia_chi, nguoi_dai_dien, ma_nganh]);
 
     return c.json({ message: "Đã tạo công ty" }, 201);
@@ -46,7 +46,7 @@ export const createCongTy = async (c: Context) => {
 };
 
 export const updateCongTy = async (c: Context) => {
-  const { id } = c.req.param();
+  const id = c.req.param("ma_cty");
   const { ten_cty, dia_chi, nguoi_dai_dien, ma_nganh } = await c.req.json();
   try {
     await db.query(`
@@ -60,7 +60,7 @@ export const updateCongTy = async (c: Context) => {
 };
 
 export const deleteCongTy = async (c: Context) => {
-  const { id } = c.req.param();
+  const id = c.req.param("ma_cty");
   try {
     await db.query("DELETE FROM CONG_TY WHERE ma_cty = ?", [id]);
     return c.json({ message: "Đã xoá công ty" });
