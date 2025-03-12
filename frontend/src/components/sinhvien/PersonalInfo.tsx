@@ -4,7 +4,7 @@ interface InfoItem {
   label: string;
   value: string;
 }
-import "../styles/PersonalInfo.css"; 
+import "../../styles/sinhvien/PersonalInfo.css";
 
 const personalInfo: InfoItem[] = [
   { key: "fullName", label: "Họ và tên", value: "Nguyễn Văn An" },

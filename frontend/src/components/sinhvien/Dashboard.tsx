@@ -1,5 +1,5 @@
 import { JSX, useState } from "react";
-import "../styles/Dashboard.css"; 
+import "../../styles/sinhvien/Dashboard.css";
 import {
   Menu as MenuIcon,
   Home,

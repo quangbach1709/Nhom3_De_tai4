@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Dashboard from "./components/Dashboard";
-import PersonalInfo from "./components/PersonalInfo";
+import Dashboard from "./components/sinhvien/Dashboard";
+import PersonalInfo from "./components/sinhvien/PersonalInfo";
 
 
 function App() {
