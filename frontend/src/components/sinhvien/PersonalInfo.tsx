@@ -38,5 +38,6 @@ export default function PersonalInfo() {
         ))}
       </div>
     </div>
+    
   );
 }
