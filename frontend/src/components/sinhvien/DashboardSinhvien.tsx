@@ -11,8 +11,8 @@ import {
 } from "lucide-react";
 
 import PersonalInfo from "./PersonalInfo";
-import Login from "../login/Login";
-import ChangePassword from "../login/ChangePassword";
+import Login from "../auth/Login";
+import ChangePassword from "../auth/ChangePassword";
 import { useNavigate } from "react-router-dom";
 
 
