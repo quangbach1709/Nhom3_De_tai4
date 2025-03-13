@@ -13,7 +13,7 @@ import RegisterTopic from "./components/sinhvien/RegisterTopic";
 // Import các component của Giảng viên
 import DashboardGiangVien from "./components/giangvien/DashboardGiangVien";
 
-// Import các component của Trưởng khoa (đang bị comment)
+// Import các component của Trưởng khoa (nếu cần)
 // import DashboardTruongKhoa from "./components/truongkhoa/DashboardTruongKhoa";
 
 // Import các component liên quan đến xác thực
@@ -22,29 +22,40 @@ import ChangePassword from "./components/auth/ChangePassword";
 import Unauthorized from "./components/auth/Unauthorized";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
-// Hàm kiểm tra trạng thái đăng nhập và lấy vai trò người dùng
+// Hàm lấy vai trò người dùng từ localStorage
 const getUserRole = () => {
-  const user = localStorage.getItem("user"); // Giả sử lưu thông tin người dùng trong localStorage
+  const user = localStorage.getItem("user");
   if (!user) return null;
   try {
-    return JSON.parse(user).role; // Lấy vai trò từ dữ liệu người dùng
+    return JSON.parse(user).role;
   } catch (error) {
     return null;
   }
 };
 
 function App() {
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userRole, setUserRole] = useState<string | null>(getUserRole());
 
   useEffect(() => {
-    setUserRole(getUserRole());
+    const handleStorageChange = () => setUserRole(getUserRole());
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   return (
     <Router>
       <Routes>
-        {/* Route mặc định `/` */}
-        <Route path="/" element={userRole ? <Navigate to={`/dashboard/${userRole}`} /> : <Navigate to="/login" />} />
+        {/* Điều hướng mặc định */}
+        <Route
+          path="/"
+          element={
+            userRole === "sinh_vien" ? <Navigate to="/dashboard/sinhvien" />
+              : userRole === "giang_vien" ? <Navigate to="/dashboard/giangvien" />
+                : userRole === "truong_khoa" ? <Navigate to="/dashboard/truongkhoa" />
+                  : <Navigate to="/login" />
+          }
+        />
 
         {/* Trang đăng nhập */}
         <Route path="/login" element={<Login />} />

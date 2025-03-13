@@ -1,35 +1,41 @@
 import type { Context, Next } from "hono";
-import { db } from "../config/db";
-import type { RowDataPacket } from "mysql2";
+import { authController } from "../controllers/auth.controller";
 
-export const authMiddleware = async (c: Context, next: Next) => {
-  const email = c.req.header("X-User-Email");
+export const loginUser = async (c: Context) => {
+  const { email, password } = await c.req.json();
 
-  if (!email) {
-    return c.json({ error: "Unauthorized" }, 401);
+  const user = await authController.getUserByEmailAndPassword(email, password);
+
+  if (!user) {
+    return c.json({ error: "Sai email hoặc mật khẩu" }, 401);
   }
 
-  const [rows] = await db.execute<RowDataPacket[]>(
-    "SELECT username, role FROM NGUOI_DUNG WHERE email = ? LIMIT 1",
-    [email]
-  );
-
-  if (rows.length === 0) {
-    return c.json({ error: "User not found" }, 401);
-  }
-
-  c.set("user", rows[0]);
-  await next();
+  return c.json({ message: "Đăng nhập thành công", user });
 };
 
 export const roleMiddleware = (allowedRoles: string[]) => {
   return async (c: Context, next: Next) => {
-    const user = c.get("user");
+    const email = c.req.header("X-User-Email");
 
-    if (!user || !allowedRoles.includes(user.role)) {
+    if (!email) {
+      console.log("🚨 Không có header X-User-Email");
+      return c.json({ error: "Unauthorized" }, 401);
+    }
+
+    const user = await authController.getUserByEmail(email);
+
+    if (!user) {
+      console.log("🚨 User không tồn tại:", email);
+      return c.json({ error: "User not found" }, 401);
+    }
+
+    if (!allowedRoles.includes(user.role)) {
+      console.log("🚨 Không đủ quyền:", user.role);
       return c.json({ error: "Forbidden" }, 403);
     }
 
+    c.set("user", user);
     await next();
   };
 };
+
