@@ -20,6 +20,7 @@ export default function Login() {
             });
 
             const data = await response.json();
+            console.log(data)
 
             if (!response.ok) {
                 setError(data.error || "Email hoặc mật khẩu không đúng!");
@@ -27,9 +28,10 @@ export default function Login() {
             }
 
             const user = data.user;
+            console.log(user.role)
 
             // Lưu email vào localStorage
-            localStorage.setItem("X-User-Email", user.email);
+            localStorage.setItem("user", JSON.stringify({ email: user.email, role: user.role }));
 
             // Điều hướng theo vai trò
             switch (user.role) {

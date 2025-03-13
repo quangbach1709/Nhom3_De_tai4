@@ -13,7 +13,7 @@ import RegisterTopic from "./components/sinhvien/RegisterTopic";
 // Import các component của Giảng viên
 import DashboardGiangVien from "./components/giangvien/DashboardGiangVien";
 
-// Import các component của Trưởng khoa (nếu cần)
+// Import các component của Trưởng khoa
 // import DashboardTruongKhoa from "./components/truongkhoa/DashboardTruongKhoa";
 
 // Import các component liên quan đến xác thực
@@ -46,14 +46,14 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Điều hướng mặc định */}
+        {/* Điều hướng mặc định dựa trên vai trò */}
         <Route
           path="/"
           element={
-            userRole === "sinh_vien" ? <Navigate to="/dashboard/sinhvien" />
-              : userRole === "giang_vien" ? <Navigate to="/dashboard/giangvien" />
-                : userRole === "truong_khoa" ? <Navigate to="/dashboard/truongkhoa" />
-                  : <Navigate to="/login" />
+            userRole === "sinh_vien" ? <Navigate to="/dashboard/sinhvien" replace />
+              : userRole === "giang_vien" ? <Navigate to="/dashboard/giangvien" replace />
+                : userRole === "truong_khoa" ? <Navigate to="/dashboard/truongkhoa" replace />
+                  : <Navigate to="/login" replace />
           }
         />
 
