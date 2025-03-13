@@ -62,21 +62,22 @@
     font-size: 18px;
     cursor: pointer;
   }
-  
+
   .register-link {
     display: block;
     color: blue;
     text-decoration: none;
     margin-top: 10px;
   }
-  
+
   .register-link:hover {
     text-decoration: underline;
   }
-  .dangki{
+
+  .dangki {
     font-size: 30px;
   }
-  
+
 
 }
 
@@ -89,5 +90,4 @@
 
 .register-link:hover {
   text-decoration: underline;
-}
 }
