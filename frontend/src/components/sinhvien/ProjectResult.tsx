@@ -2,26 +2,26 @@ import "../../styles/sinhvien/ProjectResult.css";
 
 const ProjectResult = () => {
   return (
-    <div className="project-result-container">
-      <div className="header">
-        <div className="filter">
-          <label htmlFor="doan-radio">Loại đợt:</label>
-          <input type="radio" id="doan-radio" name="dot" defaultChecked />
+    <div className="project1-result1-container1">
+      <div className="header1">
+        <div className="filter1">
+          <label htmlFor="doan1-radio">Loại đợt:</label>
+          <input type="radio" id="doan1-radio" name="dot" defaultChecked />
           <button>Đồ án</button>
         </div>
-        <div className="date-info">
+        <div className="date1-info1">
           <p>Ngày bắt đầu: <strong>20-01-2025</strong></p>
           <p>Ngày kết thúc: <strong>22-01-2025</strong></p>
         </div>
       </div>
 
-      <div className="register-section">
-        <button className="project-btn">Kết quả đăng kí đồ án</button>
-      </div>
+      <div className="register1-section11">
+    <h2 className="project1-title">Kết quả đăng kí đồ án</h2>
+</div>
 
-      <div className="content">
-        <div className="grid-icon">▦</div>
-        <div className="table-container">
+      <div className="content1">
+        <div className="grid1-icon1">▦</div>
+        <div className="table1-container1">
           <table>
             <thead>
               <tr>
