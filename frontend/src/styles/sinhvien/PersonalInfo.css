@@ -39,7 +39,6 @@
 }
 
 .info-item input {
-<<<<<<< HEAD
   padding: 8px 12px;
   border: 2px solid #ddd;
   border-radius: 8px;
@@ -102,11 +101,3 @@ button {
   .info-grid {
     grid-template-columns: 1fr;
   }
-}
-=======
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: #f9f9f9;
-}
->>>>>>> db028b1e06e4a7cb34fc4cb687dbc179ae065335

@@ -62,7 +62,6 @@
     font-size: 18px;
     cursor: pointer;
   }
-<<<<<<< HEAD
   
   .register-link {
     display: block;
@@ -78,7 +77,6 @@
     font-size: 30px;
   }
   
-=======
 
 }
 
@@ -92,4 +90,4 @@
 .register-link:hover {
   text-decoration: underline;
 }
->>>>>>> db028b1e06e4a7cb34fc4cb687dbc179ae065335
+}
