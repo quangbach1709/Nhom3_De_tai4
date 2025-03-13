@@ -1,4 +1,8 @@
-.project-btn{
+:root {
+    color-scheme: light;
+}
+
+.project-btn {
     pointer-events: none;
 }
 .project1-result1-container1 {

@@ -6,6 +6,11 @@
   box-sizing: border-box;
 }
 
+:root {
+  color-scheme: light;
+}
+
+
 html,
 body {
   width: 100%;

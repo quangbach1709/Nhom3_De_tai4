@@ -1,3 +1,7 @@
+:root {
+  color-scheme: light;
+}
+
 .personal-info-container {
   max-width: 600px;
   margin: 50px auto;
@@ -35,6 +39,7 @@
 }
 
 .info-item input {
+<<<<<<< HEAD
   padding: 8px 12px;
   border: 2px solid #ddd;
   border-radius: 8px;
@@ -98,3 +103,10 @@ button {
     grid-template-columns: 1fr;
   }
 }
+=======
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f9f9f9;
+}
+>>>>>>> db028b1e06e4a7cb34fc4cb687dbc179ae065335

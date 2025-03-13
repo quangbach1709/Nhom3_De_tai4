@@ -15,8 +15,13 @@
     {
       "id": "3",
       "email": "sinhvien@example.com",
+<<<<<<< HEAD:frontend/src/components/login/db.json
+      "password": ".",
+      "role": "sinhvien"
+=======
       "password": "mk123",
       "role": "sinh_vien"
+>>>>>>> 643662858895eb9d6f1d4844bee331d1e6ca691b:frontend/src/db.json
     }
   ]
 }
