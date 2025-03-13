@@ -13,28 +13,35 @@ export default function Login() {
         setError("");
 
         try {
-            const response = await fetch(`http://localhost:5000/users?email=${email}&password=${password}`);
-            const users = await response.json();
+            const response = await fetch("http://localhost:4000/api/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-            if (users.length === 0) {
-                setError("Email hoặc mật khẩu không đúng!");
+            const data = await response.json();
+            console.log(data)
+
+            if (!response.ok) {
+                setError(data.error || "Email hoặc mật khẩu không đúng!");
                 return;
             }
 
-            const user = users[0];
+            const user = data.user;
+            console.log(user.role)
 
-            // Lưu thông tin user vào localStorage
-            localStorage.setItem("user", JSON.stringify(user));
+            // Lưu email vào localStorage
+            localStorage.setItem("user", JSON.stringify({ email: user.email, role: user.role }));
 
             // Điều hướng theo vai trò
             switch (user.role) {
-                case "truongkhoa":
+                case "truong_khoa":
                     navigate("/dashboard/truongkhoa");
                     break;
-                case "giangvien":
+                case "giang_vien":
                     navigate("/dashboard/giangvien");
                     break;
-                case "sinhvien":
+                case "sinh_vien":
                     navigate("/dashboard/sinhvien");
                     break;
                 default:

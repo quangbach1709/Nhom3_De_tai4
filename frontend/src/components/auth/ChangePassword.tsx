@@ -13,13 +13,11 @@ export default function ChangePassword() {
         setError("");
         setSuccess("");
 
-        // Kiểm tra mật khẩu nhập lại có khớp không
         if (newPassword !== confirmPassword) {
             setError("Mật khẩu mới và nhập lại mật khẩu không khớp!");
             return;
         }
 
-        // Lấy thông tin user từ localStorage
         const storedUser = localStorage.getItem("user");
         if (!storedUser) {
             setError("Bạn chưa đăng nhập!");
@@ -27,22 +25,26 @@ export default function ChangePassword() {
         }
 
         const user = JSON.parse(storedUser);
-        const userId = user.id;
+        const email = user.email; // Lấy email trực tiếp từ localStorage
 
         try {
-            // Gửi yêu cầu đến API để xác thực và cập nhật mật khẩu
-            const response = await fetch(`http://localhost:5000/users/${userId}`, {
-                method: "PATCH",
+            const response = await fetch("http://localhost:4000/api/change-password", {
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "X-User-Email": email,
                 },
                 body: JSON.stringify({
-                    password: newPassword,
+                    email,
+                    currentPassword,
+                    newPassword,
                 }),
             });
 
-            if (!response.ok) {
-                throw new Error("Đổi mật khẩu thất bại!");
+            const data = await response.json();
+
+            if (!data.success) {
+                throw new Error(data.message);
             }
 
             setSuccess("Đổi mật khẩu thành công!");
@@ -50,7 +52,7 @@ export default function ChangePassword() {
             setNewPassword("");
             setConfirmPassword("");
         } catch (error) {
-            setError("Có lỗi xảy ra khi đổi mật khẩu!");
+            setError((error as Error).message);
         }
     };
 
@@ -61,7 +63,6 @@ export default function ChangePassword() {
 
                 {error && <p className="error-message">{error}</p>}
                 {success && <p className="success-message">{success}</p>}
-
                 <div className="form-group">
                     <label>Mật khẩu hiện tại</label>
                     <input

@@ -1,6 +1,5 @@
-import { Context } from "hono";
+import type { Context } from "hono";
 import { db } from "../config/db";
-import { DotDoAn } from "../models/dot-do-an.model";
 
 export const getAllDotDoAn = async (c: Context) => {
   try {
