@@ -13,6 +13,12 @@ export const getGiangVienByNganh = async (c: Context) => {
     return c.json(rows);
 };
 
+export const getGiangVienByID = async (c: Context) => {
+    const { ma_gv } = c.req.param();
+    const [rows] = await db.execute('SELECT * FROM GIANG_VIEN WHERE ma_gv = ?', [ma_gv]);
+    return c.json(rows);
+};
+
 export const createGiangVien = async (c: Context) => {
     const body = await c.req.json();
     await db.execute(
