@@ -2,7 +2,6 @@ import { useState } from "react";
 import "../../styles/login/ChangePassword.css";
 
 export default function ChangePassword() {
-    const [email, setEmail] = useState<string>("");
     const [currentPassword, setCurrentPassword] = useState<string>("");
     const [newPassword, setNewPassword] = useState<string>("");
     const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -26,17 +25,17 @@ export default function ChangePassword() {
         }
 
         const user = JSON.parse(storedUser);
-        setEmail(user.email); // Cập nhật email từ localStorage
+        const email = user.email; // Lấy email trực tiếp từ localStorage
 
         try {
             const response = await fetch("http://localhost:4000/api/change-password", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "X-User-Email": user.email,
+                    "X-User-Email": email,
                 },
                 body: JSON.stringify({
-                    email: email,
+                    email,
                     currentPassword,
                     newPassword,
                 }),
