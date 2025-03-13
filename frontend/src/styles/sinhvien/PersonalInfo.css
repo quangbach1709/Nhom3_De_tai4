@@ -1,3 +1,7 @@
+:root {
+  color-scheme: light;
+}
+
 .personal-info-container {
   max-width: 900px;
   margin: 20px auto;

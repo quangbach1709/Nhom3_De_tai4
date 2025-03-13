@@ -5,11 +5,17 @@
     box-sizing: border-box;
 }
 
+:root {
+    color-scheme: light;
+}
+
+
 html,
 body {
     height: 100%;
     font-family: Arial, sans-serif;
     background: #f4f4f4;
+    color: #333;
 }
 
 .auth-container {
@@ -53,6 +59,8 @@ body {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background: #fff;
+    color: #333;
 }
 
 /* Nút đăng nhập */

@@ -1,3 +1,7 @@
-.project-btn{
+:root {
+    color-scheme: light;
+}
+
+.project-btn {
     pointer-events: none;
 }
