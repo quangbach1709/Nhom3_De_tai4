@@ -20,3 +20,20 @@ export const createSinhVien = async (c: Context) => {
     );
     return c.json({ message: 'Sinh viên đã được tạo' });
 };
+
+export const updateSinhVien = async (c: Context) => {
+  const { ma_sv } = c.req.param();
+  const body = await c.req.json();
+  await db.execute(
+    "UPDATE sinh_vien SET username = ?, lop = ?, ma_nganh = ? WHERE ma_sv = ?",
+    [body.username, body.lop, body.ma_nganh, ma_sv]
+  );
+  return c.json({ message: "Sinh viên đã được cập nhật" });
+};
+
+// Xóa sinh viên
+export const deleteSinhVien = async (c: Context) => {
+  const { ma_sv } = c.req.param();
+  await db.execute("DELETE FROM sinh_vien WHERE ma_sv = ?", [ma_sv]);
+  return c.json({ message: "Sinh viên đã được xóa" });
+};

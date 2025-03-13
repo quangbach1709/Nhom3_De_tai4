@@ -21,3 +21,21 @@ export const createGiangVien = async (c: Context) => {
     );
     return c.json({ message: 'Giảng viên đã được tạo' });
 };
+
+// Cập nhật thông tin giảng viên
+export const updateGiangVien = async (c: Context) => {
+    const { ma_gv } = c.req.param();
+    const body = await c.req.json();
+    await db.execute(
+      "UPDATE giang_vien SET username = ?, chuc_danh = ?, ma_nganh = ? WHERE ma_gv = ?",
+      [body.username, body.chuc_danh, body.ma_nganh, ma_gv]
+    );
+    return c.json({ message: "Giảng viên đã được cập nhật" });
+  };
+  
+  // Xóa giảng viên
+  export const deleteGiangVien = async (c: Context) => {
+    const { ma_gv } = c.req.param();
+    await db.execute("DELETE FROM GIANG_VIEN WHERE ma_gv = ?", [ma_gv]);
+    return c.json({ message: "Giảng viên đã được xóa" });
+  };

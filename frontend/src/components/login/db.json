@@ -15,7 +15,7 @@
     {
       "id": "3",
       "email": "sinhvien@example.com",
-      "password": "mksinhvien",
+      "password": ".",
       "role": "sinhvien"
     }
   ]
