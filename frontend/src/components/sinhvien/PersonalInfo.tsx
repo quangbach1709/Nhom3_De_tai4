@@ -1,12 +1,13 @@
+import { useState } from "react";
+import "../../styles/sinhvien/PersonalInfo.css";
 
 interface InfoItem {
   key: string;
   label: string;
   value: string;
 }
-import "../../styles/sinhvien/PersonalInfo.css";
 
-const personalInfo: InfoItem[] = [
+const initialPersonalInfo: InfoItem[] = [
   { key: "fullName", label: "Họ và tên", value: "Nguyễn Văn An" },
   { key: "gender", label: "Giới tính", value: "Nam" },
   { key: "dob", label: "Ngày sinh", value: "22/02/2000" },
@@ -19,25 +20,60 @@ const personalInfo: InfoItem[] = [
 ];
 
 export default function PersonalInfo() {
+  const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
+  const [editInfo, setEditInfo] = useState(initialPersonalInfo);
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Xử lý khi người dùng thay đổi thông tin
+  const handleChange = (key: string, value: string) => {
+    setEditInfo((prevInfo) =>
+      prevInfo.map((item) =>
+        item.key === key ? { ...item, value } : item
+      )
+    );
+  };
+
+  // Lưu thay đổi
+  const handleSave = () => {
+    setPersonalInfo(editInfo);
+    setIsEditing(false);
+  };
+
+  // Hủy thay đổi, quay lại dữ liệu cũ
+  const handleCancel = () => {
+    setEditInfo(personalInfo);
+    setIsEditing(false);
+  };
+
   return (
     <div className="personal-info-container">
       <h2 className="title">Thông tin cá nhân</h2>
       <div className="info-grid">
-        {personalInfo.map((item) => (
+        {editInfo.map((item) => (
           <div className="info-item" key={item.key}>
             <label htmlFor={item.key}>{item.label}</label>
             <input
               id={item.key}
               type="text"
               value={item.value}
-              readOnly
-              aria-label={item.label}
-              title={item.label}
+              readOnly={!isEditing}
+              onChange={(e) => handleChange(item.key, e.target.value)}
             />
           </div>
         ))}
       </div>
+      <div className="button-group">
+        {isEditing ? (
+          <>
+            <button className="save-btn" onClick={handleSave}>Lưu</button>
+            <button className="cancel-btn" onClick={handleCancel}>Hủy</button>
+          </>
+        ) : (
+          <button className="update-btn" onClick={() => setIsEditing(true)}>
+            Cập nhật
+          </button>
+        )}
+      </div>
     </div>
-    
   );
 }

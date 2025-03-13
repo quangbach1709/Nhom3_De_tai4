@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 // Import các component của Sinh viên
 import DashboardSinhvien from "./components/sinhvien/DashboardSinhvien";
 import PersonalInfo from "./components/sinhvien/PersonalInfo";
-import Internship from "./components/sinhvien/Internship";
+import Internship from "./components/sinhvien/InternshipRegister";
 import InternshipResult from "./components/sinhvien/InternshipResult";
-import Project from "./components/sinhvien/Project";
+import Project from "./components/sinhvien/ProjectRegister";
 import ProjectResult from "./components/sinhvien/ProjectResult";
 import RegisterTopic from "./components/sinhvien/RegisterTopic";
 

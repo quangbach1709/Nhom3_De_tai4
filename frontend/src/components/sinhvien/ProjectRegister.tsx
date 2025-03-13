@@ -21,15 +21,14 @@ const Project = () => {
 
       {/* Đăng ký Button */}
       <div className="register-section">
-        <button className="register-button">Đăng kí</button>
+        <h1 className="dangki">Đăng kí</h1>
       </div>
 
       {/* Nội dung chính */}
       <div className="content">
         <div className="grid-icon">▦</div>
-        <div className="refresh-icon">⟳</div>
         <div className="table-container">
-          <a href="dang-ky-de-tai" className="RegisterTopic">Click vào đây để đăng kí đề tài</a>
+          <a href="/dang-ky-de-tai" className="RegisterTopic">Click vào đây để đăng kí đề tài</a>
         </div>
       </div>
     </div>

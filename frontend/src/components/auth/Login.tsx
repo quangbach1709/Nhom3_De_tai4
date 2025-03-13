@@ -31,7 +31,7 @@ export default function Login() {
             console.log(user.role)
 
             // Lưu email vào localStorage
-            localStorage.setItem("user", JSON.stringify({ email: user.email, role: user.role }));
+            localStorage.setItem("user", JSON.stringify({ email: user.email, role: user.role, ho_ten: user.ho_ten }));
 
             // Điều hướng theo vai trò
             switch (user.role) {

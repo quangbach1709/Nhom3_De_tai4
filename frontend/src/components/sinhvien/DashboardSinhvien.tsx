@@ -11,10 +11,10 @@ import {
 } from "lucide-react";
 
 import PersonalInfo from "./PersonalInfo";
-import Internship from "./Internship";
+import Internship from "./InternshipRegister";
 import InternshipResult from "./InternshipResult";
 import ProjectResult from "./ProjectResult";
-import Project from "./Project";
+import Project from "./ProjectRegister";
 import ChangePassword from "../auth/ChangePassword";
 import Login from "../auth/Login";
 import { useNavigate } from "react-router-dom";
@@ -48,6 +48,10 @@ export default function DashboardSinhvien() {
   const [currentPage, setCurrentPage] = useState<string>("home");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  // Lấy thông tin người dùng từ localStorage
+  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const hoTen = user.ho_ten || "Người dùng";
 
   const renderContent = () => {
     switch (currentPage) {
@@ -99,7 +103,7 @@ export default function DashboardSinhvien() {
         {/* User Dropdown */}
         <div className="user-dropdown" onClick={() => setDropdownOpen(!dropdownOpen)}>
           <User className="user-icon" size={20} />
-          <span className="username">NGUYỄN VĂN AN</span>
+          <span className="username">{hoTen}</span>
           <ChevronDown className={`dropdown-icon ${dropdownOpen ? "rotated" : ""}`} size={18} />
           {dropdownOpen && (
             <div className="dropdown-menu">
@@ -109,7 +113,13 @@ export default function DashboardSinhvien() {
               <div className="dropdown-item" onClick={() => setCurrentPage("change-password")}>
                 Đổi mật khẩu
               </div>
-              <div className="dropdown-item" onClick={() => navigate("/login")}>
+              <div
+                className="dropdown-item"
+                onClick={() => {
+                  localStorage.removeItem("user"); // Xóa user khỏi localStorage khi đăng xuất
+                  navigate("/login");
+                }}
+              >
                 Đăng xuất
               </div>
             </div>

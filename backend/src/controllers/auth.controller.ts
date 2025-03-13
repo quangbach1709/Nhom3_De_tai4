@@ -5,7 +5,7 @@ import type { ResultSetHeader } from "mysql2/promise";
 export const authController = {
   getUserByEmailAndPassword: async (email: string, password: string) => {
     const [rows] = await db.execute<RowDataPacket[]>(
-      "SELECT username, email, role FROM NGUOI_DUNG WHERE email = ? AND password = ? LIMIT 1",
+      "SELECT * FROM NGUOI_DUNG WHERE email = ? AND password = ? LIMIT 1",
       [email, password]
     );
 
