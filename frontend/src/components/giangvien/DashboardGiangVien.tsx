@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 
 import ProjectApproval from "./ProjectApproval";
-import PersonalInfo from "./PersonalInfo";
+import PersonalInfoGiangVien from "./PersonalInfoGiangVien";
 import ChangePassword from "../auth/ChangePassword";
 
 interface MenuItem {
@@ -24,13 +24,13 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
     { name: "Trang chủ", key: "home", icon: <Home size={18} /> },
     { name: "Phê duyệt đồ án", key: "project-approval", icon: <ClipboardList size={18} /> },
-    { name: "Thông tin cá nhân", key: "personal-info", icon: <User size={18} /> },
+    { name: "Thông tin cá nhân", key: "personalinfor-giangvien", icon: <User size={18} /> },
     { name: "Đổi mật khẩu", key: "change-password", icon: <Key size={18} /> },
 ];
 
 const gridItems: MenuItem[] = [
     { name: "Phê duyệt đồ án", key: "project-approval" },
-    { name: "Thông tin cá nhân", key: "personal-info" },
+    { name: "Thông tin cá nhân", key: "personalinfor-giangvien" },
     { name: "Đổi mật khẩu", key: "change-password" },
 ];
 
@@ -44,10 +44,12 @@ export default function Dashboard() {
         switch (currentPage) {
             case "project-approval":
                 return <ProjectApproval />;
-            case "personal-info":
-                return <PersonalInfo />;
+            case "personalinfor-giangvien":
+                return <PersonalInfoGiangVien setCurrentPage={setCurrentPage} />; // ✅ Truyền prop
             case "change-password":
                 return <ChangePassword />;
+                case "project-approval":
+                return <ProjectApproval />;
             default:
                 return (
                     <div className="grid-container">
