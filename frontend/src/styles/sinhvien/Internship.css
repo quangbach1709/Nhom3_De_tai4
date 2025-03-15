@@ -94,3 +94,30 @@ input[type="checkbox"] {
 .button{
   pointer-events: none;
 }
+/* Thông báo đăng ký thành công (trôi ngang từ phải vào) */
+.success-message {
+  position: fixed;
+  top: 20px;
+  right: -300px; /* Bắt đầu ngoài màn hình */
+  background-color: #28a745;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: right 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  opacity: 0;
+  z-index: 1000;
+}
+
+/* Khi hiển thị, trôi vào giữa màn hình */
+.success-message.show {
+  right: 20px; /* Di chuyển vào màn hình */
+  opacity: 1;
+}
+
+/* Khi ẩn đi, trôi ra khỏi màn hình */
+.success-message:not(.show) {
+  right: -300px; /* Trôi ra ngoài màn hình */
+  opacity: 0;
+}
