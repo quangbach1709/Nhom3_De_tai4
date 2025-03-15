@@ -11,7 +11,7 @@ const Internship = () => {
         <div className="filter">
           <label htmlFor="thuctap-radio">Loại đợt:</label>
           <input type="radio" id="thuctap-radio" name="dot" defaultChecked />
-          <button>Thực tập</button>
+          <button  className="button2">Thực tập</button>
         </div>
         <div className="date-info">
           <p>Ngày bắt đầu: <strong>20-01-2025</strong></p>
@@ -20,8 +20,7 @@ const Internship = () => {
       </div>
 
       {/* Đăng ký Button */}
-      <div className="register-section">
-      </div>
+      
 
       {/* Nội dung chính */}
       <div className="content">
@@ -51,7 +50,7 @@ const Internship = () => {
                     checked={selected}
                     onChange={() => setSelected(!selected)}
                   />
-                  <label htmlFor="internship-checkbox">Chọn</label>
+                  <label htmlFor="internship-checkbox"></label>
                 </td>
               </tr>
             </tbody>

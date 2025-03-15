@@ -54,7 +54,7 @@ const RegisterTopic = () => {
 
             <div className="button-group">
               <button type="submit" className="btn-register">Đăng Kí</button>
-              <button type="button" className="btn-cancel" onClick={() => navigate("/sinhvien/dashboard")}>
+              <button type="button" className="btn-cancel" onClick={() => navigate("/dashboard/sinhvien")}>
                 Hủy
               </button>
             </div>

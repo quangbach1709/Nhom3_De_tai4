@@ -17,6 +17,9 @@ import ProjectResult from "./ProjectResult";
 import Project from "./ProjectRegister";
 import ChangePassword from "../auth/ChangePassword";
 import Login from "../auth/Login";
+import UpdateForm from "./UpdateForm";
+import RegisterTopic from "./RegisterTopic";
+
 import { useNavigate } from "react-router-dom";
 
 interface MenuItem {
@@ -28,7 +31,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { name: "Trang chủ", key: "home", icon: <Home size={18} /> },
   { name: "Đăng ký thực tập", key: "internship", icon: <ClipboardList size={18} /> },
-  { name: "Đăng ký đồ án", key: "project", icon: <FileText size={18} /> },
+  { name: "Đăng ký đồ án", key: "project-page-container", icon: <FileText size={18} /> },
   { name: "Kết quả đồ án", key: "project-result", icon: <CheckCircle size={18} /> },
   { name: "Kết quả thực tập", key: "internship-result", icon: <CheckCircle size={18} /> },
   { name: "Thông tin cá nhân", key: "personal-info", icon: <User size={18} /> },
@@ -36,7 +39,7 @@ const menuItems: MenuItem[] = [
 
 const gridItems: MenuItem[] = [
   { name: "Đăng ký thực tập", key: "internship" },
-  { name: "Đăng ký đồ án", key: "project" },
+  { name: "Đăng ký đồ án", key: "project-page-container" },
   { name: "Kết quả đồ án", key: "project-result" },
   { name: "Kết quả thực tập", key: "internship-result" },
   { name: "Thông tin cá nhân", key: "personal-info" },
@@ -63,10 +66,14 @@ export default function DashboardSinhvien() {
         return <InternshipResult />;
       case "project-result":
         return <ProjectResult />;
-      case "project":
+      case "project-page-container":
         return <Project />;
       case "change-password":
         return <ChangePassword />;
+          case "register-topic-wrapper":
+            return <RegisterTopic />;
+            case "update-form":
+              return <UpdateForm />;
       default:
         return (
           <div className="grid-container">
