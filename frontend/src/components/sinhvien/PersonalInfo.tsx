@@ -1,79 +1,65 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/sinhvien/PersonalInfo.css";
-
-interface InfoItem {
-  key: string;
-  label: string;
-  value: string;
-}
-
-const initialPersonalInfo: InfoItem[] = [
-  { key: "fullName", label: "Họ và tên", value: "Nguyễn Văn An" },
-  { key: "gender", label: "Giới tính", value: "Nam" },
-  { key: "dob", label: "Ngày sinh", value: "22/02/2000" },
-  { key: "phone", label: "Số điện thoại", value: "0912345678" },
-  { key: "email", label: "Email", value: "pihanx1@gmail.com" },
-  { key: "major", label: "Chuyên ngành", value: "Công nghệ thông tin" },
-  { key: "majorCode", label: "Mã ngành", value: "CSE123" },
-  { key: "studentId", label: "Mã sinh viên", value: "12345678" },
-  { key: "class", label: "Lớp", value: "CNTT1" },
-];
+import UpdateForm from "./UpdateForm"; // Import UpdateForm
 
 export default function PersonalInfo() {
-  const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
-  const [editInfo, setEditInfo] = useState(initialPersonalInfo);
-  const [isEditing, setIsEditing] = useState(false);
+  const [currentPage, setCurrentPage] = useState("personal-info");
 
-  // Xử lý khi người dùng thay đổi thông tin
-  const handleChange = (key: string, value: string) => {
-    setEditInfo((prevInfo) =>
-      prevInfo.map((item) =>
-        item.key === key ? { ...item, value } : item
-      )
+  // State để lưu thông tin cá nhân
+  const [personalInfo, setPersonalInfo] = useState({
+    fullName: "Nguyễn Văn An",
+    gender: "Nam",
+    dob: "22/02/2000",
+    phone: "0912345678",
+    email: "pihanx1@gmail.com",
+    major: "Công nghệ thông tin",
+    majorCode: "CSE123",
+    studentId: "12345678",
+    class: "CNTT1",
+  });
+
+  useEffect(() => {
+    const storedData = JSON.parse(localStorage.getItem("personalInfo") || "{}");
+    if (Object.keys(storedData).length > 0) {
+      setPersonalInfo((prev) => ({ ...prev, ...storedData }));
+    }
+  }, []);
+
+  const fieldLabels: Record<string, string> = {
+    fullName: "Họ và tên",
+    gender: "Giới tính",
+    dob: "Ngày sinh",
+    phone: "Số điện thoại",
+    email: "Email",
+    major: "Chuyên ngành",
+    majorCode: "Mã ngành",
+    studentId: "Mã sinh viên",
+    class: "Lớp",
+  };
+
+  // Hàm render component theo currentPage
+  const renderContent = () => {
+    if (currentPage === "update-form") {
+      return <UpdateForm setCurrentPage={setCurrentPage} />;
+    }
+    return (
+      <div className="personal-info-container">
+        <h2 className="title">Thông tin cá nhân</h2>
+        <div className="info-grid">
+          {Object.entries(personalInfo).map(([key, value]) => (
+            <div className="info-item" key={key}>
+              <label>{fieldLabels[key] || key}</label>
+              <input type="text" value={value} readOnly />
+            </div>
+          ))}
+        </div>
+        <div className="button-group">
+          <button onClick={() => setCurrentPage("update-form")}>Cập nhật thông tin</button>
+        </div>
+      </div>
     );
   };
 
-  // Lưu thay đổi
-  const handleSave = () => {
-    setPersonalInfo(editInfo);
-    setIsEditing(false);
-  };
-
-  // Hủy thay đổi, quay lại dữ liệu cũ
-  const handleCancel = () => {
-    setEditInfo(personalInfo);
-    setIsEditing(false);
-  };
-
-  return (
-    <div className="personal-info-container">
-      <h2 className="title">Thông tin cá nhân</h2>
-      <div className="info-grid">
-        {editInfo.map((item) => (
-          <div className="info-item" key={item.key}>
-            <label htmlFor={item.key}>{item.label}</label>
-            <input
-              id={item.key}
-              type="text"
-              value={item.value}
-              readOnly={!isEditing}
-              onChange={(e) => handleChange(item.key, e.target.value)}
-            />
-          </div>
-        ))}
-      </div>
-      <div className="button-group">
-        {isEditing ? (
-          <>
-            <button className="save-btn" onClick={handleSave}>Lưu</button>
-            <button className="cancel-btn" onClick={handleCancel}>Hủy</button>
-          </>
-        ) : (
-          <button className="update-btn" onClick={() => setIsEditing(true)}>
-            Cập nhật
-          </button>
-        )}
-      </div>
-    </div>
-  );
+  return renderContent();
 }
+

@@ -7,7 +7,7 @@ const ProjectResult = () => {
         <div className="filter1">
           <label htmlFor="doan1-radio">Loại đợt:</label>
           <input type="radio" id="doan1-radio" name="dot" defaultChecked />
-          <button>Đồ án</button>
+          <button className="button2">Đồ án</button>
         </div>
         <div className="date1-info1">
           <p>Ngày bắt đầu: <strong>20-01-2025</strong></p>

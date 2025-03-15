@@ -12,9 +12,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #dcdcdc;
+  
   padding: 10px;
   border-radius: 5px;
+}
+.button2{
+  pointer-events: none;
 }
 
 .radio-group {
@@ -36,12 +39,7 @@
   margin-top: 10px;
 }
 
-.register-button:hover {
-  background: white !important;
-  border: 1px solid #000 !important;
-  color: inherit !important;
-  cursor: default !important;
-}
+
 
 .internship-content {
   display: flex;
@@ -71,9 +69,6 @@
   color: blue;
 }
 
-.refresh-icon {
-  cursor: pointer;
-}
 
 table {
   width: 100%;
@@ -95,4 +90,7 @@ th {
 input[type="checkbox"] {
   width: 18px;
   height: 18px;
+}
+.button{
+  pointer-events: none;
 }

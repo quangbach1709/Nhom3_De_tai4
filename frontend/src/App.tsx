@@ -9,7 +9,7 @@ import InternshipResult from "./components/sinhvien/InternshipResult";
 import Project from "./components/sinhvien/ProjectRegister";
 import ProjectResult from "./components/sinhvien/ProjectResult";
 import RegisterTopic from "./components/sinhvien/RegisterTopic";
-
+import UpdateForm from "./components/sinhvien/UpdateForm";
 // Import các component của Giảng viên
 import DashboardGiangVien from "./components/giangvien/DashboardGiangVien";
 
@@ -74,7 +74,8 @@ function App() {
           <Route path="/internship-result" element={<InternshipResult />} />
           <Route path="/project" element={<Project />} />
           <Route path="/project-result" element={<ProjectResult />} />
-          <Route path="/dang-ky-de-tai" element={<RegisterTopic />} />
+          <Route path="/update-form" element={<UpdateForm />} />
+          <Route path="/register-topic-wrapper" element={<RegisterTopic />} />
         </Route>
 
         {/* Bảo vệ các trang dành riêng cho Giảng viên */}
