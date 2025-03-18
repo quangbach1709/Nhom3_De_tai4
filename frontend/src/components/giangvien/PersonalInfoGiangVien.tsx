@@ -43,10 +43,10 @@ export default function PersonalInfoGiangVien() {
   const renderContent = () => {
     if (currentPage === "update-form") {
       return (
-        <GiangVienUpd 
-          setCurrentPage={setCurrentPage} 
-          giangVienInfo={giangVienInfo} 
-          setGiangVienInfo={setGiangVienInfo} 
+        <GiangVienUpd
+          setCurrentPage={setCurrentPage}
+          giangVienInfo={giangVienInfo}
+          setGiangVienInfo={setGiangVienInfo}
         />
       );
     }
@@ -57,7 +57,7 @@ export default function PersonalInfoGiangVien() {
         <div className="info-grid">
           {Object.entries(giangVienInfo).map(([key, value]) => (
             <div className="info-item" key={key}>
-              <label>{labelMap[key] || key}</label> 
+              <label>{labelMap[key] || key}</label>
               <input type="text" value={value} readOnly />
             </div>
           ))}

@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import "../../styles/sinhvien/Dashboard.css";
 import {
   Menu as MenuIcon,
@@ -16,7 +16,6 @@ import InternshipResult from "./InternshipResult";
 import ProjectResult from "./ProjectResult";
 import Project from "./ProjectRegister";
 import ChangePassword from "../auth/ChangePassword";
-import Login from "../auth/Login";
 import UpdateForm from "./UpdateForm";
 import RegisterTopic from "./RegisterTopic";
 
@@ -43,10 +42,12 @@ const gridItems: MenuItem[] = [
   { name: "Kết quả đồ án", key: "project-result" },
   { name: "Kết quả thực tập", key: "internship-result" },
   { name: "Thông tin cá nhân", key: "personal-info" },
-  { name: "Danh sách giảng viên", key: "teachers" },
 ];
 
 export default function DashboardSinhvien() {
+  useEffect(() => {
+    document.title = 'Dashboard';
+  }, []);
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
   const [currentPage, setCurrentPage] = useState<string>("home");
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -70,10 +71,10 @@ export default function DashboardSinhvien() {
         return <Project />;
       case "change-password":
         return <ChangePassword />;
-          case "register-topic-wrapper":
-            return <RegisterTopic />;
-            case "update-form":
-              return <UpdateForm />;
+      case "register-topic-wrapper":
+        return <RegisterTopic />;
+      case "update-form":
+        return <UpdateForm />;
       default:
         return (
           <div className="grid-container">

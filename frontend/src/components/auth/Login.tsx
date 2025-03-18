@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login/Auth.css";
 
 export default function Login() {
+    useEffect(() => {
+        document.title = 'Login';
+    }, []);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [error, setError] = useState<string>("");
@@ -20,7 +23,6 @@ export default function Login() {
             });
 
             const data = await response.json();
-            console.log(data)
 
             if (!response.ok) {
                 setError(data.error || "Email hoặc mật khẩu không đúng!");
@@ -28,10 +30,10 @@ export default function Login() {
             }
 
             const user = data.user;
-            console.log(user.role)
 
-            // Lưu email vào localStorage
-            localStorage.setItem("user", JSON.stringify({ email: user.email, role: user.role, ho_ten: user.ho_ten }));
+            // 🛠 Lưu toàn bộ dữ liệu user vào localStorage
+            localStorage.setItem("user", JSON.stringify(user));
+            console.log(localStorage.getItem("user"));
 
             // Điều hướng theo vai trò
             switch (user.role) {
@@ -51,6 +53,7 @@ export default function Login() {
             setError("Lỗi kết nối đến server!");
         }
     };
+
 
     return (
         <div className="auth-container">

@@ -1,42 +1,67 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/giangvien/ProjectApproval.css";
 
-const initialStudents = [
-    { id: 1, name: "Nguyễn Văn A", studentId: "A123456", project: "Xây dựng Website bán máy tính qua mạng.", status: "Duyệt" },
-    { id: 2, name: "Nguyễn Văn B", studentId: "15324551", project: "Xây dựng Website bán quần áo qua mạng.", status: "Từ chối" },
-    { id: 3, name: "Nguyễn Văn C", studentId: "15324551", project: "Xây dựng Website bán quần áo qua mạng.", status: "Duyệt" },
-    { id: 4, name: "Nguyễn Văn D", studentId: "15324551", project: "Xây dựng Website bán quần áo qua mạng.", status: "Từ chối" },
-    { id: 5, name: "Nguyễn Văn E", studentId: "15324551", project: "Xây dựng Website bán quần áo qua mạng.", status: "Duyệt" },
-];
+interface Project {
+    ma_da: string;
+    ten_de_tai: string;
+    trang_thai: string;
+    ma_sv: string;
+    ten_sinh_vien: string;
+}
 
 const ProjectApproval: React.FC = () => {
-    const [students, setStudents] = useState(initialStudents);
+    const [students, setStudents] = useState<Project[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
+    const [updateMessage, setUpdateMessage] = useState<string | null>(null);
 
-    const handleApproval = (id: number, newStatus: string) => {
-        setStudents(
-            students.map((student) =>
-                student.id === id ? { ...student, status: newStatus } : student
-            )
-        );
+    const fetchProjects = async () => {
+        try {
+            const response = await fetch("/api/do-an");
+            if (!response.ok) throw new Error("Không thể lấy dữ liệu");
+            const data = await response.json();
+            setStudents(data);
+        } catch (err) {
+            setError("Lỗi khi tải dữ liệu");
+        } finally {
+            setLoading(false);
+        }
     };
+
+    useEffect(() => {
+        fetchProjects();
+    }, []);
+
+    const handleApproval = async (id: string, newStatus: string) => {
+        try {
+            console.log(`🛠️ Đang cập nhật trạng thái cho đồ án ${id}...`);
+
+            const response = await fetch(`/api/do-an/${id}`, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ trang_thai: newStatus }),
+            });
+
+            if (!response.ok) throw new Error("Không thể cập nhật trạng thái");
+
+            console.log(`✅ Cập nhật thành công: ${id} -> ${newStatus}`);
+            setUpdateMessage(`Đã cập nhật trạng thái thành ${newStatus}`);
+
+            await fetchProjects();
+        } catch (error) {
+            console.error("❌ Lỗi khi cập nhật trạng thái:", error);
+            setUpdateMessage("Lỗi khi cập nhật trạng thái");
+        }
+    };
+
+    if (loading) return <p className="loading-message">Đang tải dữ liệu...</p>;
+    if (error) return <p className="error-message">{error}</p>;
 
     return (
         <div className="container">
             <h2 className="title">Danh Sách Sinh Viên Hướng Dẫn</h2>
 
-            <div className="filter-container">
-                <label className="filter-label" htmlFor="faculty">Khoa</label>
-                <select id="faculty" className="filter-select" aria-label="Chọn khoa">
-                    <option>Công nghệ thông tin</option>
-                </select>
-
-                <label className="filter-label" htmlFor="major">Chuyên ngành</label>
-                <select id="major" className="filter-select" aria-label="Chọn chuyên ngành">
-                    <option>Kĩ thuật phần mềm</option>
-                </select>
-
-                <button className="search-btn">🔍</button>
-            </div>
+            {updateMessage && <p className="update-message">{updateMessage}</p>}
 
             <table className="student-table">
                 <thead>
@@ -51,19 +76,21 @@ const ProjectApproval: React.FC = () => {
                 </thead>
                 <tbody>
                     {students.map((student, index) => (
-                        <tr key={student.id}>
+                        <tr key={student.ma_da}>
                             <td>{index + 1}</td>
                             <td className="student-name">
-                                <a href="#">{student.name}</a>
+                                <a href="#">{student.ten_sinh_vien}</a>
                             </td>
-                            <td>{student.studentId}</td>
-                            <td>{student.project}</td>
-                            <td className={student.status === "Duyệt" ? "approved" : "rejected"}>{student.status}</td>
+                            <td>{student.ma_sv}</td>
+                            <td>{student.ten_de_tai}</td>
+                            <td className={student.trang_thai === "Đã duyệt" ? "approved" : "rejected"}>
+                                {student.trang_thai}
+                            </td>
                             <td>
-                                <button className="approve-btn" onClick={() => handleApproval(student.id, "Duyệt")}>
+                                <button className="approve-btn" onClick={() => handleApproval(student.ma_da, "Đã duyệt")}>
                                     Duyệt
                                 </button>
-                                <button className="reject-btn" onClick={() => handleApproval(student.id, "Từ chối")}>
+                                <button className="reject-btn" onClick={() => handleApproval(student.ma_da, "Từ chối")}>
                                     Từ chối
                                 </button>
                             </td>
@@ -71,12 +98,6 @@ const ProjectApproval: React.FC = () => {
                     ))}
                 </tbody>
             </table>
-
-            <div className="pagination">
-                <button className="page-btn">Trước</button>
-                <span className="page-number">1</span>
-                <button className="page-btn">Sau</button>
-            </div>
         </div>
     );
 };

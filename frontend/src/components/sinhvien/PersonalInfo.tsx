@@ -1,27 +1,48 @@
 import { useState, useEffect } from "react";
 import "../../styles/sinhvien/PersonalInfo.css";
-import UpdateForm from "./UpdateForm"; // Import UpdateForm
+import UpdateForm from "./UpdateForm";
 
 export default function PersonalInfo() {
   const [currentPage, setCurrentPage] = useState("personal-info");
-
-  // State để lưu thông tin cá nhân
   const [personalInfo, setPersonalInfo] = useState({
-    fullName: "Nguyễn Văn An",
-    gender: "Nam",
-    dob: "22/02/2000",
-    phone: "0912345678",
-    email: "pihanx1@gmail.com",
-    major: "Công nghệ thông tin",
-    majorCode: "CSE123",
-    studentId: "12345678",
-    class: "CNTT1",
+    fullName: "",
+    gender: "",
+    dob: "",
+    phone: "",
+    email: "",
+    major: "Chưa cập nhật",
+    majorCode: "N/A",
+    studentId: "N/A",
+    class: "Chưa cập nhật",
   });
 
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("personalInfo") || "{}");
-    if (Object.keys(storedData).length > 0) {
-      setPersonalInfo((prev) => ({ ...prev, ...storedData }));
+    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
+    if (storedUser.email) {
+      setPersonalInfo((prev) => ({
+        ...prev,
+        fullName: storedUser.ho_ten || "",
+        gender: storedUser.gioi_tinh || "",
+        dob: storedUser.ngay_sinh ? storedUser.ngay_sinh.split("T")[0] : "",
+        phone: storedUser.so_dien_thoai || "",
+        email: storedUser.email || "",
+        studentId: storedUser.username || "N/A",
+      }));
+
+      fetch(`/api/sinh-vien/${storedUser.username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.length > 0) {
+            const sinhVien = data[0];
+            setPersonalInfo((prev) => ({
+              ...prev,
+              major: sinhVien.ten_nganh || "Chưa cập nhật",
+              majorCode: sinhVien.ma_nganh || "N/A",
+              class: sinhVien.lop || "Chưa cập nhật",
+            }));
+          }
+        })
+        .catch((err) => console.error("Lỗi khi lấy thông tin sinh viên:", err));
     }
   }, []);
 
@@ -37,7 +58,6 @@ export default function PersonalInfo() {
     class: "Lớp",
   };
 
-  // Hàm render component theo currentPage
   const renderContent = () => {
     if (currentPage === "update-form") {
       return <UpdateForm setCurrentPage={setCurrentPage} />;
@@ -62,4 +82,3 @@ export default function PersonalInfo() {
 
   return renderContent();
 }
-

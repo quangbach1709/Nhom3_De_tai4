@@ -35,12 +35,12 @@ export const getDoAnById = async (c: Context) => {
 };
 
 export const createDoAn = async (c: Context) => {
-  const { ma_da, ten_de_tai,trang_thai,ngay_bao_cao, ma_sv, ma_gv,ma_dot } = await c.req.json();
+  const { ma_da, ten_de_tai, trang_thai, ngay_bao_cao, ma_sv, ma_gv, ma_dot } = await c.req.json();
   try {
     await db.query(`
       INSERT INTO DO_AN (ma_da, ten_de_tai,trang_thai,ngay_bao_cao, ma_sv, ma_gv,ma_dot)
       VALUES (?, ?, ?, ?, ?, ?, ?)
-    `, [ma_da, ten_de_tai,trang_thai,ngay_bao_cao, ma_sv, ma_gv,ma_dot]);
+    `, [ma_da, ten_de_tai, trang_thai, ngay_bao_cao, ma_sv, ma_gv, ma_dot]);
 
     return c.json({ message: "Đã tạo đồ án" }, 201);
   } catch (error) {
@@ -49,18 +49,37 @@ export const createDoAn = async (c: Context) => {
 };
 
 export const updateDoAn = async (c: Context) => {
-  const { id } = c.req.param();
-  const { ten_de_tai,trang_thai,ngay_bao_cao, ma_sv, ma_gv,ma_dot } = await c.req.json();
+  const id = c.req.param("id");
+  const body = await c.req.json();
+
+  if (!id || Object.keys(body).length === 0) {
+    return c.json({ error: "Thiếu dữ liệu đầu vào" }, 400);
+  }
+
   try {
-    await db.query(`
-      UPDATE DO_AN SET ten_de_tai = ?, trang_thai = ?, ngay_bao_cao = ?, ma_sv = ?, ma_gv = ?, ma_dot = ? WHERE ma_da = ?
-    `, [ten_de_tai,trang_thai,ngay_bao_cao, ma_sv, ma_gv,ma_dot, id]);
+    const fields = Object.keys(body)
+      .map((key) => `${key} = ?`)
+      .join(", ");
+    const values = Object.values(body);
+
+    if (!fields) {
+      return c.json({ error: "Không có dữ liệu để cập nhật" }, 400);
+    }
+
+    values.push(id);
+    const [result]: any = await db.query(`UPDATE DO_AN SET ${fields} WHERE ma_da = ?`, values);
+
+    if (result.affectedRows === 0) {
+      return c.json({ error: "Không tìm thấy đồ án" }, 404);
+    }
 
     return c.json({ message: "Đã cập nhật đồ án" });
   } catch (error) {
-    return c.json({ error: "Lỗi khi cập nhật đồ án" }, 500);
+    console.error("❌ Lỗi SQL khi cập nhật đồ án:", error);
+    return c.json({ error: "Lỗi server", details: error }, 500);
   }
 };
+
 
 export const deleteDoAn = async (c: Context) => {
   const { id } = c.req.param();

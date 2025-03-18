@@ -1,40 +1,88 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import "../../styles/sinhvien/UpdateForm.css";
 
 export default function UpdateForm({ setCurrentPage }: { setCurrentPage: (page: string) => void }) {
-  const navigate = useNavigate();
+  const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
 
-  // Lấy dữ liệu từ localStorage (nếu có)
-  const storedData = JSON.parse(localStorage.getItem("personalInfo") || "{}");
-
-  // State để lưu dữ liệu của form
   const [formData, setFormData] = useState({
-    fullName: storedData.fullName || "Nguyễn Văn An",
-    gender: storedData.gender || "Nam",
-    dob: storedData.dob || "22/02/2000",
-    phone: storedData.phone || "0912345678",
-    email: storedData.email || "pxhoan12@gmail.com",
-    major: storedData.major || "Công nghệ thông tin",
+    fullName: "",
+    gender: "",
+    dob: "",
+    phone: "",
+    email: "",
+    major: "",
+    majorCode: "",
+    studentId: "",
+    class: "",
   });
 
-  // Hàm xử lý thay đổi giá trị input
+  useEffect(() => {
+    if (storedUser.email) {
+      setFormData((prev) => ({
+        ...prev,
+        fullName: storedUser.ho_ten || "",
+        gender: storedUser.gioi_tinh || "",
+        dob: storedUser.ngay_sinh ? storedUser.ngay_sinh.split("T")[0] : "",
+        phone: storedUser.so_dien_thoai || "",
+        email: storedUser.email || "",
+        studentId: storedUser.username || "",
+      }));
+
+      fetch(`/api/sinh-vien/${storedUser.username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.length > 0) {
+            const sinhVien = data[0];
+            setFormData((prev) => ({
+              ...prev,
+              major: sinhVien.ten_nganh || "Chưa cập nhật",
+              majorCode: sinhVien.ma_nganh || "N/A",
+              class: sinhVien.lop || "Chưa cập nhật",
+            }));
+          }
+        })
+        .catch((err) => console.error("Lỗi khi lấy thông tin sinh viên:", err));
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  // Hàm lưu dữ liệu và quay về trang thông tin cá nhân
-  const handleSave = () => {
-    localStorage.setItem("personalInfo", JSON.stringify(formData));
-    alert("Lưu thay đổi thành công!"); 
-    setCurrentPage("/personal-info"); // Quay lại trang thông tin cá nhân
+  const handleSave = async () => {
+    try {
+      const response = await fetch("/api/nguoi-dung/capnhat", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: formData.studentId,
+          email: formData.email,
+          fullName: formData.fullName,
+          gender: formData.gender,
+          dob: formData.dob,
+          phone: formData.phone,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        localStorage.setItem("user", JSON.stringify(formData));
+        alert("Cập nhật thành công!");
+        setCurrentPage("personal-info");
+      } else {
+        alert(result.message || "Cập nhật thất bại!");
+      }
+    } catch (error) {
+      console.error("Lỗi khi cập nhật thông tin:", error);
+      alert("Đã xảy ra lỗi, vui lòng thử lại!");
+    }
   };
-  
 
   return (
     <div className="update-form-container">
-      <div className="update-form-header">Cập nhật</div>
+      <div className="update-form-header">Cập nhật thông tin</div>
       <div className="update-form-body">
         <div className="update-form-group">
           <label htmlFor="fullName">Họ và tên</label>
@@ -48,7 +96,7 @@ export default function UpdateForm({ setCurrentPage }: { setCurrentPage: (page: 
 
         <div className="update-form-group">
           <label htmlFor="dob">Ngày sinh</label>
-          <input id="dob" type="text" value={formData.dob} onChange={handleChange} />
+          <input id="dob" type="date" value={formData.dob} onChange={handleChange} />
         </div>
 
         <div className="update-form-group">
@@ -63,7 +111,7 @@ export default function UpdateForm({ setCurrentPage }: { setCurrentPage: (page: 
 
         <div className="update-form-group">
           <label htmlFor="major">Chuyên ngành</label>
-          <input id="major" type="text" value={formData.major} onChange={handleChange} />
+          <input id="major" type="text" value={formData.major} readOnly />
         </div>
 
         <div className="update-form-actions">
@@ -71,8 +119,8 @@ export default function UpdateForm({ setCurrentPage }: { setCurrentPage: (page: 
             Lưu thay đổi
           </button>
           <button className="update-form-cancel-btn" onClick={() => setCurrentPage("personal-info")}>
-  Hủy
-</button>
+            Hủy
+          </button>
         </div>
       </div>
     </div>

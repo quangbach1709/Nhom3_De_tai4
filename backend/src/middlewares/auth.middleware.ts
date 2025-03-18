@@ -1,10 +1,10 @@
 import type { Context, Next } from "hono";
-import { authController } from "../controllers/auth.controller";
+import { nguoiDungController } from "../controllers/nguoi-dung.controller";
 
 export const loginUser = async (c: Context) => {
   const { email, password } = await c.req.json();
 
-  const user = await authController.getUserByEmailAndPassword(email, password);
+  const user = await nguoiDungController.getUserByEmailAndPassword(email, password);
 
   if (!user) {
     return c.json({ error: "Sai email hoặc mật khẩu" }, 401);
@@ -22,7 +22,7 @@ export const roleMiddleware = (allowedRoles: string[]) => {
       return c.json({ error: "Unauthorized" }, 401);
     }
 
-    const user = await authController.getUserByEmail(email);
+    const user = await nguoiDungController.getUserByEmail(email);
 
     if (!user) {
       console.log("🚨 User không tồn tại:", email);

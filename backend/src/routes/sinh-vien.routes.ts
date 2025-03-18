@@ -11,7 +11,7 @@ import {
 export const sinhVienRoute = new Hono();
 
 sinhVienRoute.get("/", getAllSinhVien);
-sinhVienRoute.get("/:ma_nganh", getSinhVienByNganh);
+sinhVienRoute.get("/nganh/:ma_nganh", getSinhVienByNganh);
 sinhVienRoute.get("/:ma_sv", getSinhVienByID);
 sinhVienRoute.post("/", createSinhVien);
 sinhVienRoute.put("/:ma_sv", updateSinhVien);

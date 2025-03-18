@@ -1,4 +1,4 @@
-import { JSX, useState } from "react";
+import { JSX, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/giangvien/Dashboard.css";
 
@@ -35,6 +35,12 @@ const gridItems: MenuItem[] = [
 ];
 
 export default function Dashboard() {
+    useEffect(() => {
+        document.title = 'Dashboard';
+    }, []);
+    // Lấy thông tin người dùng từ localStorage
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    const hoTen = user.ho_ten || "Người dùng";
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
     const [currentPage, setCurrentPage] = useState<string>("home");
     const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
@@ -48,8 +54,6 @@ export default function Dashboard() {
                 return <PersonalInfoGiangVien setCurrentPage={setCurrentPage} />; // ✅ Truyền prop
             case "change-password":
                 return <ChangePassword />;
-                case "project-approval":
-                return <ProjectApproval />;
             default:
                 return (
                     <div className="grid-container">
@@ -86,7 +90,7 @@ export default function Dashboard() {
                 {/* User Dropdown */}
                 <div className="user-dropdown" onClick={() => setDropdownOpen(!dropdownOpen)}>
                     <User className="user-icon" size={20} />
-                    <span className="username">Trần Văn Bình</span>
+                    <span className="username">{hoTen}</span>
                     <ChevronDown className={`dropdown-icon ${dropdownOpen ? "rotated" : ""}`} size={18} />
                     {dropdownOpen && (
                         <div className="dropdown-menu">

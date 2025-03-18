@@ -25,7 +25,7 @@ export default function ChangePassword() {
         }
 
         const user = JSON.parse(storedUser);
-        const email = user.email; // Lấy email trực tiếp từ localStorage
+        const email = user.email;
 
         try {
             const response = await fetch("http://localhost:4000/api/change-password", {
@@ -51,6 +51,12 @@ export default function ChangePassword() {
             setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
+
+            // Hiển thị alert
+            alert("Đổi mật khẩu thành công!");
+
+            // Ẩn thông báo sau 3 giây
+            setTimeout(() => setSuccess(""), 3000);
         } catch (error) {
             setError((error as Error).message);
         }
@@ -63,6 +69,7 @@ export default function ChangePassword() {
 
                 {error && <p className="error-message">{error}</p>}
                 {success && <p className="success-message">{success}</p>}
+
                 <div className="form-group">
                     <label>Mật khẩu hiện tại</label>
                     <input
