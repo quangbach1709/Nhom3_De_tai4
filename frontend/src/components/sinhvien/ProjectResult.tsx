@@ -6,7 +6,6 @@ const ProjectResult = () => {
       <div className="header1">
         <div className="filter1">
           <label htmlFor="doan1-radio">Loại đợt:</label>
-          <input type="radio" id="doan1-radio" name="dot" defaultChecked />
           <button className="button2">Đồ án</button>
         </div>
         <div className="date1-info1">
@@ -16,8 +15,8 @@ const ProjectResult = () => {
       </div>
 
       <div className="register1-section11">
-    <h2 className="project1-title">Kết quả đăng kí đồ án</h2>
-</div>
+        <h2 className="project1-title">Kết quả đăng kí đồ án</h2>
+      </div>
 
       <div className="content1">
         <div className="grid1-icon1">▦</div>

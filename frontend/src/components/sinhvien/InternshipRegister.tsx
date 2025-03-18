@@ -1,43 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../../styles/sinhvien/Internship.css";
 
+interface InternshipData {
+  ma_tt: string;
+  thoi_gian_bat_dau: string;
+  thoi_gian_ket_thuc: string;
+  ma_sv: string;
+  ma_cty: string;
+  ma_dot: string;
+  ten_sinh_vien: string;
+  ten_cong_ty: string;
+}
+
 const Internship = () => {
-  const [selected, setSelected] = useState(false);
+  const [selectedInternship, setSelectedInternship] = useState<string | null>(null);
   const [showMessage, setShowMessage] = useState(false);
+  const [internships, setInternships] = useState<InternshipData[]>([]);
 
-  const handleCheckboxChange = () => {
-    const newSelected = !selected;
-    setSelected(newSelected);
+  useEffect(() => {
+    const fetchInternships = async () => {
+      try {
+        const response = await fetch("/api/thuc-tap");
+        if (!response.ok) throw new Error("Lỗi khi tải danh sách thực tập");
+        const data: InternshipData[] = await response.json();
+        setInternships(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
-    if (newSelected) {
-      setShowMessage(true);
+    fetchInternships();
+  }, []);
 
-      // Ẩn thông báo sau 2.5 giây
-      setTimeout(() => setShowMessage(false), 2500);
-    }
+  const handleCheckboxChange = (ma_tt: string) => {
+    setSelectedInternship(ma_tt === selectedInternship ? null : ma_tt);
+    setShowMessage(true);
+    setTimeout(() => setShowMessage(false), 2500);
   };
 
   return (
     <div className="internship-container">
-      {/* Thông báo đăng ký thành công (Trôi ngang vào màn hình) */}
       <div className={`success-message ${showMessage ? "show" : ""}`}>
         ✅ Đăng ký thực tập thành công!
       </div>
 
-      {/* Header */}
       <div className="header">
         <div className="filter">
           <label htmlFor="thuctap-radio">Loại đợt:</label>
-          <input type="radio" id="thuctap-radio" name="dot" defaultChecked />
           <button className="button2">Thực tập</button>
-        </div>
-        <div className="date-info">
-          <p>Ngày bắt đầu: <strong>20-01-2025</strong></p>
-          <p>Ngày kết thúc: <strong>22-01-2025</strong></p>
         </div>
       </div>
 
-      {/* Nội dung chính */}
       <div className="content">
         <div className="grid-icon">▦</div>
         <div className="table-container">
@@ -48,26 +61,38 @@ const Internship = () => {
           <table>
             <thead>
               <tr>
-                <th>Tuần</th>
-                <th>Thời gian</th>
-                <th>Đăng kí</th>
+                <th>Công ty</th>
+                <th>Ngày bắt đầu</th>
+                <th>Ngày kết thúc</th>
+                <th>Đăng ký</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>24 --&gt; 31 (10/02/2025 - 06/04/2025)</td>
-                <td>2 tháng</td>
-                <td>
-                  <input
-                    type="checkbox"
-                    id="internship-checkbox"
-                    title="Chọn đăng ký thực tập"
-                    checked={selected}
-                    onChange={handleCheckboxChange}
-                  />
-                  <label htmlFor="internship-checkbox"></label>
-                </td>
-              </tr>
+              {internships.length > 0 ? (
+                internships.map((internship) => (
+                  <tr key={internship.ma_tt}>
+                    <td>{internship.ten_cong_ty}</td>
+                    <td>{new Date(internship.thoi_gian_bat_dau).toLocaleDateString()}</td>
+                    <td>{new Date(internship.thoi_gian_ket_thuc).toLocaleDateString()}</td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        id={`internship-${internship.ma_tt}`}
+                        title="Chọn đăng ký thực tập"
+                        checked={selectedInternship === internship.ma_tt}
+                        onChange={() => handleCheckboxChange(internship.ma_tt)}
+                      />
+                      <label htmlFor={`internship-${internship.ma_tt}`}></label>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: "center" }}>
+                    Không có đợt thực tập nào
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

@@ -3,18 +3,9 @@ import { useEffect, useState } from "react";
 
 // Import các component của Sinh viên
 import DashboardSinhvien from "./components/sinhvien/DashboardSinhvien";
-import PersonalInfo from "./components/sinhvien/PersonalInfo";
-import Internship from "./components/sinhvien/InternshipRegister";
-import InternshipResult from "./components/sinhvien/InternshipResult";
-import Project from "./components/sinhvien/ProjectRegister";
-import ProjectResult from "./components/sinhvien/ProjectResult";
-import RegisterTopic from "./components/sinhvien/RegisterTopic";
-import UpdateForm from "./components/sinhvien/UpdateForm";
-
 // Import các component của Giảng viên
 import DashboardGiangVien from "./components/giangvien/DashboardGiangVien";
-import PersonalInfoGiangVien from "./components/giangvien/PersonalInfoGiangVien";
-import GiangVienUpd from "./components/giangvien/GiangVienUpd";
+
 
 
 
@@ -75,21 +66,11 @@ function App() {
         {/* Bảo vệ các trang dành riêng cho Sinh viên */}
         <Route element={<ProtectedRoute allowedRoles={["sinh_vien"]} />}>
           <Route path="/dashboard/sinhvien" element={<DashboardSinhvien />} />
-          <Route path="/personal-info" element={<PersonalInfo />} />
-          <Route path="/internship" element={<Internship />} />
-          <Route path="/internship-result" element={<InternshipResult />} />
-          <Route path="/project" element={<Project />} />
-          <Route path="/project-result" element={<ProjectResult />} />
-          <Route path="/update-form" element={<UpdateForm />} />
-          <Route path="/register-topic-wrapper" element={<RegisterTopic />} />
         </Route>
 
         {/* Bảo vệ các trang dành riêng cho Giảng viên */}
         <Route element={<ProtectedRoute allowedRoles={["giang_vien"]} />}>
           <Route path="/dashboard/giangvien" element={<DashboardGiangVien />} />
-          <Route path="/personalinfor-giangvien" element={<PersonalInfoGiangVien />} />
-          <Route path="/personalinfor-giangvien" element={<GiangVienUpd />} />
-
         </Route>
 
         {/* Bảo vệ các trang dành riêng cho Trưởng khoa */}

@@ -2,15 +2,13 @@ import { useState } from "react";
 import "../../styles/sinhvien/project.css";
 
 const Project = () => {
-  const [] = useState(false);
+  const [showRegisterForm, setShowRegisterForm] = useState(false);
 
   return (
     <div className="project-page-container">
-      {/* Header */}
       <div className="project-page-header">
         <div className="project-page-filter">
           <label htmlFor="doan-radio">Loại đợt:</label>
-          <input type="radio" id="doan-radio" name="dot" defaultChecked />
           <button className="button2">Đồ án</button>
         </div>
         <div className="project-page-date-info">
@@ -19,16 +17,33 @@ const Project = () => {
         </div>
       </div>
 
-      {/* Đăng ký Button */}
       <div className="project-page-register-section">
         <h1 className="project-page-dangki">Đăng kí</h1>
       </div>
 
-      {/* Nội dung chính */}
       <div className="project-page-content">
         <div className="project-page-grid-icon">▦</div>
         <div className="project-page-table-container">
-          <a href="/register-topic-wrapper" className="project-page-register-topic">Click vào đây để đăng kí đề tài</a>
+          {showRegisterForm ? (
+            <div className="register-form">
+              <h2>Đăng ký đề tài</h2>
+              <label>
+                Tên đề tài:
+                <input type="text" placeholder="Nhập tên đề tài" />
+              </label>
+              <label>
+                Công nghệ sử dụng:
+                <textarea placeholder="Nhập công nghệ sẽ sử dụng"></textarea>
+              </label>
+              <button className="button-submit" onClick={() => setShowRegisterForm(false)}>
+                Gửi đăng ký
+              </button>
+            </div>
+          ) : (
+            <button className="project-page-register-topic" onClick={() => setShowRegisterForm(true)}>
+              Click vào đây để đăng kí đề tài
+            </button>
+          )}
         </div>
       </div>
     </div>

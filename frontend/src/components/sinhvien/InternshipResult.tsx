@@ -8,7 +8,6 @@ const InternshipResult = () => {
       <div className="header">
         <div className="filter">
           <label htmlFor="thuctap-radio">Loại đợt:</label>
-          <input type="radio" id="thuctap-radio" name="dot" defaultChecked />
           <button className="button2">Thực tập</button>
         </div>
         <div className="date-info">
