@@ -50,7 +50,6 @@ app.route("/api/nguoi-dung", nguoiDungRoute);
 app.use("/api/sinh-vien", roleMiddleware(["sinh_vien"]));
 app.route("/api/sinh-vien", sinhVienRoute);
 
-app.use("/api/giang-vien", roleMiddleware(["giang_vien"]));
 app.route("/api/giang-vien", giangVienRoute);
 
 app.use("/api/truong-khoa", roleMiddleware(["truong_khoa"]));

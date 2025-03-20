@@ -6,13 +6,6 @@ import DashboardSinhvien from "./components/sinhvien/DashboardSinhvien";
 // Import các component của Giảng viên
 import DashboardGiangVien from "./components/giangvien/DashboardGiangVien";
 
-
-
-
-
-// Import các component của Trưởng khoa
-// import DashboardTruongKhoa from "./components/truongkhoa/DashboardTruongKhoa";
-
 // Import các component liên quan đến xác thực
 import Login from "./components/auth/Login";
 import ChangePassword from "./components/auth/ChangePassword";
@@ -43,13 +36,13 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Điều hướng mặc định dựa trên vai trò */}
+        {/* Điều hướng mặc định */}
         <Route
           path="/"
           element={
             userRole === "sinh_vien" ? <Navigate to="/dashboard/sinhvien" replace />
               : userRole === "giang_vien" ? <Navigate to="/dashboard/giangvien" replace />
-                : userRole === "truong_khoa" ? <Navigate to="/dashboard/truongkhoa" replace />
+                : userRole === "truong_khoa" ? <Navigate to="/login" replace />
                   : <Navigate to="/login" replace />
           }
         />
@@ -72,11 +65,6 @@ function App() {
         <Route element={<ProtectedRoute allowedRoles={["giang_vien"]} />}>
           <Route path="/dashboard/giangvien" element={<DashboardGiangVien />} />
         </Route>
-
-        {/* Bảo vệ các trang dành riêng cho Trưởng khoa */}
-        {/* <Route element={<ProtectedRoute allowedRoles={["truong_khoa"]} />}>
-          <Route path="/dashboard/truongkhoa" element={<DashboardTruongKhoa />} />
-        </Route> */}
       </Routes>
     </Router>
   );

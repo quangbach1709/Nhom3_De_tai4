@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../../styles/sinhvien/project.css";
 
 const Project = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const [giangViens, setGiangViens] = useState<any[]>([]);
+  const [selectedGiangVien, setSelectedGiangVien] = useState("");
+
+  useEffect(() => {
+    const fetchGiangViens = async () => {
+      try {
+        const response = await fetch("/api/giang-vien");
+        const data = await response.json();
+        setGiangViens(data);
+      } catch (error) {
+        console.error("Lỗi khi tải danh sách giảng viên:", error);
+      }
+    };
+
+    fetchGiangViens();
+  }, []);
 
   return (
     <div className="project-page-container">
@@ -35,6 +51,21 @@ const Project = () => {
                 Công nghệ sử dụng:
                 <textarea placeholder="Nhập công nghệ sẽ sử dụng"></textarea>
               </label>
+              <label>
+                Chọn giảng viên hướng dẫn:
+                <select
+                  value={selectedGiangVien}
+                  onChange={(e) => setSelectedGiangVien(e.target.value)}
+                >
+                  <option value="">-- Chọn giảng viên --</option>
+                  {giangViens.map((giangVien) => (
+                    <option key={giangVien.ma_gv} value={giangVien.ma_gv}>
+                      {giangVien.ma_gv} - {giangVien.chuc_danh} ({giangVien.linh_vuc})
+                    </option>
+                  ))}
+                </select>
+              </label>
+
               <button className="button-submit" onClick={() => setShowRegisterForm(false)}>
                 Gửi đăng ký
               </button>

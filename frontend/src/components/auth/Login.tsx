@@ -38,7 +38,7 @@ export default function Login() {
             // Điều hướng theo vai trò
             switch (user.role) {
                 case "truong_khoa":
-                    navigate("/dashboard/truongkhoa");
+                    window.location.href = "http://localhost:5173/";
                     break;
                 case "giang_vien":
                     navigate("/dashboard/giangvien");
@@ -49,6 +49,7 @@ export default function Login() {
                 default:
                     setError("Vai trò không hợp lệ!");
             }
+
         } catch (error) {
             setError("Lỗi kết nối đến server!");
         }
