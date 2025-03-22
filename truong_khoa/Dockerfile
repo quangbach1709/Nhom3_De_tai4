@@ -10,7 +10,7 @@ RUN bun install
 COPY . .
 
 # Expose port
-EXPOSE 4000
+EXPOSE 5173
 
 # Start Vite using Bun
 CMD ["bun", "run", "dev"]
