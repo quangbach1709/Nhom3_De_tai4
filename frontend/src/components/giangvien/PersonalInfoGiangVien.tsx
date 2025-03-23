@@ -7,27 +7,54 @@ export default function PersonalInfoGiangVien() {
 
   // State lưu thông tin giảng viên
   const [giangVienInfo, setGiangVienInfo] = useState({
-    fullName: "Trần Văn Bình",
-    gender: "Nam",
-    dob: "15/08/1985",
-    phone: "0987654321",
-    email: "binh.tran@tlu.edu.vn",
-    field: "Trí tuệ nhân tạo",
-    teacherId: "23456789",
-    position: "Thạc sĩ",
-    majorCode: "CSE567",
+    fullName: "",
+    gender: "",
+    dob: "",
+    phone: "",
+    email: "",
+    field: "Chưa cập nhật",
+    teacherId: "",
+    position: "Chưa cập nhật",
+    majorCode: "N/A",
   });
 
-  // Lấy dữ liệu từ localStorage nếu có
   useEffect(() => {
-    const storedData = JSON.parse(localStorage.getItem("giangVienInfo") || "{}");
+    const storedData = JSON.parse(localStorage.getItem("user") || "{}");
+
     if (Object.keys(storedData).length > 0) {
-      setGiangVienInfo((prev) => ({ ...prev, ...storedData }));
+      setGiangVienInfo((prev) => ({
+        ...prev,
+        fullName: storedData.ho_ten || "",
+        gender: storedData.gioi_tinh || "",
+        dob: storedData.ngay_sinh ? new Date(storedData.ngay_sinh).toLocaleDateString("vi-VN") : "",
+        phone: storedData.so_dien_thoai || "",
+        email: storedData.email || "",
+        teacherId: storedData.username || "",
+      }));
+
+      // Gọi API lấy thông tin giảng viên
+      fetch(`/api/giang-vien/${storedData.username}`)
+        .then((res) => res.json())
+        .then((data) => {
+          console.log("Dữ liệu từ API giảng viên:", data); // Log để kiểm tra dữ liệu trả về
+          
+          if (Array.isArray(data) && data.length > 0) {
+            const giangvien = data[0];
+            setGiangVienInfo((prev) => ({
+              ...prev,
+              field: giangvien?.linh_vuc || "Chưa cập nhật",
+              position: giangvien?.chuc_danh || "Chưa cập nhật",
+              majorCode: giangvien?.ma_nganh || "N/A",
+            }));
+          } else {
+            console.warn("API giảng viên trả về dữ liệu không hợp lệ hoặc rỗng.");
+          }
+        })
+        .catch((err) => console.error("Lỗi khi lấy thông tin giảng viên:", err));
     }
   }, []);
 
-  // Danh sách nhãn tiếng Việt cho từng trường thông tin
-  const labelMap: Record<string, string> = {
+  const labelMap = {
     fullName: "Họ và tên",
     gender: "Giới tính",
     dob: "Ngày sinh",
@@ -39,7 +66,6 @@ export default function PersonalInfoGiangVien() {
     majorCode: "Mã chuyên ngành",
   };
 
-  // Xử lý render nội dung theo trạng thái `currentPage`
   const renderContent = () => {
     if (currentPage === "update-form") {
       return (
