@@ -116,3 +116,16 @@
 .reject-btn:hover {
   background-color: #c82333;
 }
+.pagination-btn {
+  color: black;  /* Màu chữ đen */
+  background-color: #f0f0f0; /* Màu nền nhẹ */
+  border: 1px solid #ccc; /* Viền nhẹ */
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.pagination-btn:disabled {
+  color: gray; /* Màu xám khi bị vô hiệu hóa */
+
+}

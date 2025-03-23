@@ -11,7 +11,7 @@ import {
 export const giangVienRoute = new Hono();
 
 giangVienRoute.get("/", getAllGiangVien);
-giangVienRoute.get("/:ma_nganh", getGiangVienByNganh);
+giangVienRoute.get("/nganh/:ma_nganh", getGiangVienByNganh);
 giangVienRoute.get("/:ma_gv", getGiangVienByID);
 giangVienRoute.post("/", createGiangVien);
 giangVienRoute.put("/:ma_gv", updateGiangVien);
