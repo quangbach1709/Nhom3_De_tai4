@@ -10,32 +10,48 @@ interface GiangVienUpdProps {
 export default function GiangVienUpd({ setCurrentPage, giangVienInfo, setGiangVienInfo }: GiangVienUpdProps) {
   const [updatedInfo, setUpdatedInfo] = useState(giangVienInfo);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedInfo({ ...updatedInfo, [e.target.name]: e.target.value });
   };
 
-  const handleSave = () => {
-    setGiangVienInfo(updatedInfo);
-    localStorage.setItem("giangVienInfo", JSON.stringify(updatedInfo));
+  const handleSave = async () => {
+    try {
+      const response = await fetch(`/api/giang-vien/${giangVienInfo.teacherId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedInfo),
+      });
 
-    // Hiển thị thông báo cập nhật thành công
-    setSuccessMessage("Cập nhật thông tin thành công!");
+      if (!response.ok) throw new Error("Cập nhật thất bại!");
 
-    // Quay lại trang trước sau 1.5 giây
-    setTimeout(() => {
-      setSuccessMessage(null);
-      setCurrentPage("personal-info");
-    }, 1500);
+      // Cập nhật lại state và localStorage
+      setGiangVienInfo(updatedInfo);
+      localStorage.setItem("giangVienInfo", JSON.stringify(updatedInfo));
+
+      setSuccessMessage("Cập nhật thông tin thành công!");
+      setErrorMessage(null);
+
+      // Quay lại trang trước sau 1.5 giây
+      setTimeout(() => {
+        setSuccessMessage(null);
+        setCurrentPage("personal-info");
+      }, 1500);
+    } catch (error) {
+      setErrorMessage("Lỗi khi cập nhật thông tin!");
+      console.error(error);
+    }
   };
 
   return (
     <div className="update3-container3">
       <div className="header2">
-        <h2>Cập nhật</h2>
+        <h2>Cập nhật thông tin</h2>
       </div>
 
       {successMessage && <div className="success-message">{successMessage}</div>}
+      {errorMessage && <div className="error-message">{errorMessage}</div>}
 
       <div className="form-grid">
         {[

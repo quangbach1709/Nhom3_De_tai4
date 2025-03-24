@@ -15,6 +15,10 @@ const ProjectApproval: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [updateMessage, setUpdateMessage] = useState<string | null>(null);
 
+    // Phân trang
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const itemsPerPage = 5;
+
     const fetchProjects = async () => {
         try {
             const response = await fetch("/api/do-an");
@@ -54,6 +58,22 @@ const ProjectApproval: React.FC = () => {
         }
     };
 
+    // Xử lý phân trang
+    const totalPages = Math.ceil(students.length / itemsPerPage);
+    const displayedStudents = students.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const goToNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const goToPreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
     if (loading) return <p className="loading-message">Đang tải dữ liệu...</p>;
     if (error) return <p className="error-message">{error}</p>;
 
@@ -75,9 +95,9 @@ const ProjectApproval: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {students.map((student, index) => (
+                    {displayedStudents.map((student, index) => (
                         <tr key={student.ma_da}>
-                            <td>{index + 1}</td>
+                            <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
                             <td className="student-name">
                                 <a href="#">{student.ten_sinh_vien}</a>
                             </td>
@@ -98,6 +118,17 @@ const ProjectApproval: React.FC = () => {
                     ))}
                 </tbody>
             </table>
+
+            {/* Nút chuyển trang */}
+            <div className="pagination">
+                <button className="pagination-btn" onClick={goToPreviousPage} disabled={currentPage === 1}>
+                    ⬅ Trang trước
+                </button>
+                <span>Trang {currentPage} / {totalPages}</span>
+                <button className="pagination-btn" onClick={goToNextPage} disabled={currentPage === totalPages}>
+                    Trang sau ➡
+                </button>
+            </div>
         </div>
     );
 };
