@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/login/Auth.css";
 
+const TRUONG_KHOA_URL = import.meta.env.VITE_TRUONG_KHOA_URL
+
 export default function Login() {
     useEffect(() => {
         document.title = 'Login';
@@ -38,7 +40,7 @@ export default function Login() {
             // Điều hướng theo vai trò
             switch (user.role) {
                 case "truong_khoa":
-                    window.location.href = "http://localhost:5173/";
+                    window.location.href = TRUONG_KHOA_URL;
                     break;
                 case "giang_vien":
                     navigate("/dashboard/giangvien");
